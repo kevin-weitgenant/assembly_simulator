@@ -18,7 +18,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.List;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,11 +35,15 @@ import javax.swing.JScrollPane;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.regex.Matcher;
+import static javax.management.Query.match;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
 
 public class TelaPrincipal extends javax.swing.JFrame{
 
@@ -49,78 +53,17 @@ public class TelaPrincipal extends javax.swing.JFrame{
     
     private boolean fbin,fhex,fdec;
     private String[] regis = new String[8];
-    private Emulador.Emulador emulador = new Emulador.Emulador();
+    private List<String> instrucoes = new ArrayList<String>();
     
-    
-    
-        class HighlighterDocListener implements DocumentListener {
-        String newline = "\n";
-     
-        public void insertUpdate(DocumentEvent e) {
-            updateLog(e, "inserted into");
-        }
-        public void removeUpdate(DocumentEvent e) {
-            updateLog(e, "removed from");
-        }
-        public void changedUpdate(DocumentEvent e) {
-            //Plain text components do not fire these events
-        }
-    
-        public void updateLog(DocumentEvent e, String action) {
-            highlightLine();
-        }
-    }
-        
-        
-    private void highlightLine (){
-        int lineIndex = emulador.finished ? 0 : emulador.mapIPLineIndex.get(emulador.IP);
-        try {
-            Highlighter hilite = CodigoFonteField.getHighlighter();
-            CodigoFonteField.setHighlighter(hilite);
-            String word = CodigoFonteField.getText();
-            int index = 0;
-            int index2 = word.indexOf("\n", index + 1);
-            for(int i=0;i<lineIndex;i++){
-                index = word.indexOf("\n", index + 1);
-                index2 = word.indexOf("\n", index + 1);
-            }
-            index2 = index2==-1? word.length():index2;
+    private int linha_atual;
 
-            DefaultHighlighter.DefaultHighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-            if(index<0)return;
-            hilite.addHighlight(index, index2 , painter);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
-        }
-    }        
-    
-    private void updateInterfaceData(){
-        this.initRegister();
-        this.highlightLine();
-        //terminalMessageLabel.setText(emulador.outputStream);
-    }  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+   
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal() throws IOException{
         
+        this.linha_atual = 0;
         this.fbin = true;
         initComponents();
         configComponents();
@@ -259,7 +202,6 @@ public class TelaPrincipal extends javax.swing.JFrame{
 
         CodigoFonteField.setColumns(20);
         CodigoFonteField.setRows(5);
-        CodigoFonteField.setText("01 read posA\n02 load posB\n03 mov  posA posB\n04 stop\n05 space\n06 space\n07 space\n08 space\n09 space\n10 pos posA\n11 pos posB\n");
         inputCodeScroll.setViewportView(CodigoFonteField);
 
         CarregarArquivo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -545,7 +487,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         String[] memo = new String[4096];
         
         for(int i = 0; i<4096; i++){
-            memo[i] = String.format("%04d", i) + ":" + "1111111100000000";
+            memo[i] = String.format("%04d", i) + ":" + "0000000000000000";
             listMemoryModel.addElement(memo[i]);
             //System.out.printf("Memoria: \n" + ListModel.get(i));
         }
@@ -577,13 +519,50 @@ public class TelaPrincipal extends javax.swing.JFrame{
        
         listMemoryModel.set(i, str);
     }
-                
+     
+    
+    private void highlighInstrucoes(int numero_linha)throws BadLocationException{
+      
+      Highlighter highlighter = CodigoFonteField.getHighlighter();
+      HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.yellow);
+      
+      int pos_0,pos_1;
+      String linha;
+      
+      highlighter.removeAllHighlights();
+      
+      linha = instrucoes.get(numero_linha);
+      
+      pos_0 = CodigoFonteField.getText().indexOf(linha);
+      pos_1 = pos_0 + linha.length();
+      System.out.println("pos_0 = "+ pos_0);
+      System.out.println("pos_1 = "+ pos_1);
+      highlighter.addHighlight(pos_0, pos_1, painter );  
+      
+      
+        
+    }
+    
+ 
+    
+    
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
-        emulador.loadInstructions(CodigoFonteField.getText());
-        this.updateInterfaceData();
-        emulador.step();
-        this.updateInterfaceData();
-        initMemoria();        // TODO add your handling code here:
+        
+ 
+        
+        linha_atual++;
+        if(linha_atual >= instrucoes.size())linha_atual = 0;
+        
+        try{
+            
+        highlighInstrucoes(linha_atual);
+        }
+        
+        catch(Exception e){
+            
+        }
+
+        
         
     }//GEN-LAST:event_nextStepActionPerformed
 
@@ -624,6 +603,10 @@ public class TelaPrincipal extends javax.swing.JFrame{
                 linha= buffRead.readLine();
             }
             CodigoFonteField.setText(ArquivoCarregado);
+            instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
+
+            
+            
             buffRead.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);

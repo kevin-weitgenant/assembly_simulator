@@ -25,4 +25,3 @@ assembly_simulator/TelaPrincipal.java
  assembly_simulator.TelaPrincipal$7
  assembly_simulator.TelaPrincipal$8
  assembly_simulator.TelaPrincipal$9
- assembly_simulator.TelaPrincipal$HighlighterDocListener

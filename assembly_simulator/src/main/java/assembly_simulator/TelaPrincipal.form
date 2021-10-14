@@ -295,7 +295,6 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="01 read posA&#xa;02 load posB&#xa;03 mov  posA posB&#xa;04 stop&#xa;05 space&#xa;06 space&#xa;07 space&#xa;08 space&#xa;09 space&#xa;10 pos posA&#xa;11 pos posB&#xa;"/>
               </Properties>
             </Component>
           </SubComponents>
