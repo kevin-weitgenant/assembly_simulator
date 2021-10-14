@@ -35,6 +35,11 @@ import javax.swing.JScrollPane;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 
 public class TelaPrincipal extends javax.swing.JFrame{
 
@@ -44,6 +49,70 @@ public class TelaPrincipal extends javax.swing.JFrame{
     
     private boolean fbin,fhex,fdec;
     private String[] regis = new String[8];
+    private Emulador.Emulador emulador = new Emulador.Emulador();
+    
+    
+    
+        class HighlighterDocListener implements DocumentListener {
+        String newline = "\n";
+     
+        public void insertUpdate(DocumentEvent e) {
+            updateLog(e, "inserted into");
+        }
+        public void removeUpdate(DocumentEvent e) {
+            updateLog(e, "removed from");
+        }
+        public void changedUpdate(DocumentEvent e) {
+            //Plain text components do not fire these events
+        }
+    
+        public void updateLog(DocumentEvent e, String action) {
+            highlightLine();
+        }
+    }
+        
+        
+    private void highlightLine (){
+        int lineIndex = emulador.finished ? 0 : emulador.mapIPLineIndex.get(emulador.IP);
+        try {
+            Highlighter hilite = CodigoFonteField.getHighlighter();
+            CodigoFonteField.setHighlighter(hilite);
+            String word = CodigoFonteField.getText();
+            int index = 0;
+            int index2 = word.indexOf("\n", index + 1);
+            for(int i=0;i<lineIndex;i++){
+                index = word.indexOf("\n", index + 1);
+                index2 = word.indexOf("\n", index + 1);
+            }
+            index2 = index2==-1? word.length():index2;
+
+            DefaultHighlighter.DefaultHighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+            if(index<0)return;
+            hilite.addHighlight(index, index2 , painter);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }        
+    
+    private void updateInterfaceData(){
+        this.initRegister();
+        this.highlightLine();
+        //terminalMessageLabel.setText(emulador.outputStream);
+    }  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -509,7 +578,12 @@ public class TelaPrincipal extends javax.swing.JFrame{
     }
                 
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
-        // TODO add your handling code here:
+        emulador.loadInstructions(CodigoFonteField.getText());
+        this.updateInterfaceData();
+        emulador.step();
+        this.updateInterfaceData();
+        initMemoria();        // TODO add your handling code here:
+        
     }//GEN-LAST:event_nextStepActionPerformed
 
     private void runAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runAllActionPerformed

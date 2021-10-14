@@ -31,8 +31,11 @@ public class Util {
     static boolean getBit( int k,int n) {
         return ((k >> n) & 1)==1;
     }
-    public static int setBit(int target,int bit,  boolean value) {
-        int mask = 1 << bit;
-        return target | mask;
+    public static short modifyBit(short target,int pos, boolean set)
+    {
+        int bit = set ? 1:0;
+        int mask = 1 << pos;
+        return (short)((target & ~mask) |
+            ((bit << pos) & mask));
     }
 }
