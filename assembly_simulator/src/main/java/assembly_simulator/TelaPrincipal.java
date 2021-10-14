@@ -238,6 +238,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         outputScreenLabel.setBounds(50, 90, 130, 110);
 
         imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imageLabel.setIcon(new javax.swing.ImageIcon("C:\\Users\\kevin\\Desktop\\agoravai\\assembly_simulator\\assembly_simulator\\src\\main\\java\\assembly_simulator\\computerImage.jpg")); // NOI18N
         displayPanel.add(imageLabel);
         imageLabel.setBounds(10, 40, 230, 260);
 
@@ -597,7 +598,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         boolean linux = false;
         String ArquivoCarregado = new String("") ;
         String linha =new String();
-        String CaminhoDoArquivo =new String(System.getProperty("user.dir")+"\\src\\file.txt"); 
+        String CaminhoDoArquivo =new String(System.getProperty("user.dir")+"\\src\\main\\java\\assembly_simulator\\file.txt"); 
         BufferedReader buffRead; //reader do arquivo
         try {
             System.out.println(linha);

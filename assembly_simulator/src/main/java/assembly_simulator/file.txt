@@ -1,0 +1,10 @@
+add valorA
+mult valoB valorA
+load valorC
+store ValorB
+stop
+space
+valorA 15
+valorB 20
+valorC 50
+hlt
