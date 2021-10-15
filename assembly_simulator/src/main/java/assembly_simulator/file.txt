@@ -7,4 +7,5 @@ space
 valorA 15
 valorB 20
 valorC 50
+add AX AX
 hlt

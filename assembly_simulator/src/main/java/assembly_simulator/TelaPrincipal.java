@@ -566,8 +566,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         highlighter.removeAllHighlights();
         
-        Emulador2.updateRegistrador(4,Emulador2.getRegistrador(4)+1);  // INCREMENTAR IP
-        Emulador2.updateMemoria(0,Emulador2.getMemoria(0)+1);
+        Emulador2.updateRegistrador(Emulador2.getRegistrador(4)+1,4);  // INCREMENTAR IP
+        Emulador2.updateMemoria(Emulador2.getMemoria(0)+1,0);
         
  
 
@@ -628,7 +628,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }
             CodigoFonteField.setText(ArquivoCarregado);
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
-
+            Emulador2.load_instrucoes();
             
             
             buffRead.close();
@@ -881,11 +881,11 @@ public class TelaPrincipal extends javax.swing.JFrame{
         }
         
         for (int i = 0; i<listMemoryModel.size();i++){
-            Emulador2.updateMemoria(i, 0);
+            Emulador2.updateMemoria(0, i);
         }
         
         for (int i = 0; i<listRegisterModel.size();i++){
-            Emulador2.updateRegistrador(i, 0);
+            Emulador2.updateRegistrador(0,i );
         }
         
         
