@@ -634,10 +634,10 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
             Emulador2.updateRegistrador(1, "AX");
             Emulador2.load_instrucoes();
-            Emulador2.tabela_operandos(tabela);
+            
             
             Emulador2.InitRegistradores();
-            
+            Emulador2.tabela_operandos(tabela);
             
             
             buffRead.close();
