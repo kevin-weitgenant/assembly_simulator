@@ -628,7 +628,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }
             CodigoFonteField.setText(ArquivoCarregado);
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
-            Emulador2.load_instrucoes();
+
+            
             
             
             buffRead.close();
