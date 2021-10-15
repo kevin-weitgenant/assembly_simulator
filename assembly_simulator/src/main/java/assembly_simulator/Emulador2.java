@@ -18,6 +18,18 @@ import java.util.Map;
  *
  * @author kevin
  */
+
+// POSICOES DA MEMORIA
+
+// PILHA  0= CHECK OVERFLOW PILHA, 1= TAMANHO DA PILHA, 2-11= POSICOES PARA EMPILHAR
+
+// SEGMENTO DE DADOS = 11-2011
+
+//SEGMENTO DE INSTRUCOES = 2012-4095
+
+
+
+
 public class Emulador2 {
     static public List<String> instrucoes = new ArrayList<String>();
  
@@ -83,8 +95,28 @@ public class Emulador2 {
         linha_reg = linha_reg.replaceAll("\\s+","");   
         return Integer.parseInt(linha_reg,16);
         
-        //RETORNA EM DECIMAL
+        
     }
+    
+    public static void InitRegistradores(){
+        // POSICOES DA MEMORIA
+
+// PILHA  0= CHECK OVERFLOW PILHA, 1= TAMANHO DA PILHA, 2-11= POSICOES PARA EMPILHAR
+
+// SEGMENTO DE DADOS = 11-2011
+
+//SEGMENTO DE INSTRUCOES = 2012-4095
+        updateRegistrador(11,"DS");
+        updateRegistrador(2012,"CS");
+        updateRegistrador(2,"SP");
+
+    }
+    
+    
+    
+    
+    
+    
     
     
     
@@ -283,7 +315,7 @@ public class Emulador2 {
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
                 int op_valor = Integer.parseInt(op_valor_str);
                 
-                System.out.println("i = "+i+"op_valor = "+op_valor);
+                
                 updateMemoria(op_valor,i);
                 
                 tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") );  
@@ -296,7 +328,7 @@ public class Emulador2 {
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
                 int op_valor = Integer.parseInt(op_valor_str);
                 
-                System.out.println("i = "+i+"op_valor = "+op_valor);
+                
                 updateMemoria(op_valor,i);
                 
                 tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") ); 
