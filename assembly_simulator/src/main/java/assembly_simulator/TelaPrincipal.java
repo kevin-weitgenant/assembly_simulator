@@ -487,7 +487,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         String[] memo = new String[4096];
         
         for(int i = 0; i<4096; i++){
-            memo[i] = String.format("%04d", i) + ":" + "0000000000000000";
+            memo[i] = String.format("%04d", i) + ":" + " 0x00";
             listMemoryModel.addElement(memo[i]);
             //System.out.printf("Memoria: \n" + ListModel.get(i));
         }
@@ -552,7 +552,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         
         
         Emulador2.updateRegistrador(4,Emulador2.getRegistrador(4)+1);  // INCREMENTAR IP
-        
+        Emulador2.updateMemoria(0,Emulador2.getMemoria(0)+1);
         
  
 

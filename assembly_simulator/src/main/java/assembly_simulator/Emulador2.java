@@ -5,6 +5,7 @@
 package assembly_simulator;
 
 import static assembly_simulator.TelaPrincipal.listRegisterModel;
+import static assembly_simulator.TelaPrincipal.listMemoryModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,18 +37,23 @@ public class Emulador2 {
         //RETORNA EM DECIMAL
     }
     
-    public int getMemoria(int posicao_palavra){
-        return 0;
+    public static int getMemoria(int posicao_palavra){
+        String linha_mem = listMemoryModel.getElementAt(posicao_palavra);
+        linha_mem = linha_mem.split("0x")[1];
+        linha_mem = linha_mem.replaceAll("\\s+","");   
+        return Integer.parseInt(linha_mem,16);
+        
+        //RETORNA EM DECIMAL
         
     }
     
-    public void updateMemoria(int posicao_palavra, int valor){
-        
+    public static void updateMemoria(int posicao_palavra, int valor){
+        String new_content = String.format("0x%02X",valor);
+        new_content = String.format("%04d", posicao_palavra) + ": " + new_content ;
+        listMemoryModel.setElementAt(""+new_content, posicao_palavra);        
         
     }
     
-
-
 
 
 }
