@@ -121,13 +121,17 @@ public class Emulador2 {
                 
             }
             
-            /*
+            
             else if(instrucao.matches("add AX DX")){
                 updateMemoria(0x03C2, i);
-                updateRegistrador()
-            }else if(instrucao.matches("add AX "+opdRegex)){
+                
+            }else if(instrucao.matches("add AX.*")){
                 updateMemoria(0x05, i++);
-                updateMemoria(calculateOpd(params[1]), i);
+                String opd = instrucao.split("AX")[1];
+                opd = opd.replaceAll("\\s+","");
+                //int valor_opd = tabela_get_operando(opdRegex);
+                //updateMemoria(valor_opd,i);
+            /*    
             }else if(instrucao.matches("div SI")){
                 updateMemoria(0xf7f6, i);
             }else if(instrucao.matches("div AX")){
@@ -219,7 +223,7 @@ public class Emulador2 {
                 System.out.println("Instrução nao reconhecida!");
             }      
             */
-            }   //APAGAR!!
+            }// DELETAR
             
         updateRegistrador(instrucoes.size(),6);  
             
@@ -234,7 +238,7 @@ public class Emulador2 {
             
             
         }
-     
+    }
         
     public static void run_instrucao(String instrucao){
         
@@ -242,7 +246,7 @@ public class Emulador2 {
         
         for (int i = 0; i< instrucoes.size(); i++){
             
-            if(instrucao.matches("add AX AX")){
+            if(instrucao.matches("add AX AX")){    //ta errado tem quer ser pelos os códigos das instruções, burrei
                 
                 int resultado = getRegistrador("AX") *2;
                 updateRegistrador(resultado,"AX");
@@ -258,6 +262,10 @@ public class Emulador2 {
         }
     }
     
+
+    
+    
+    
     
     
     public static void tabela_operandos(List<TabelaOperandos> tabela){
@@ -270,10 +278,15 @@ public class Emulador2 {
             if (instrucao.contains("EQU")){
                 
                 String op_nome = instrucao.split("EQU")[0];
-                System.out.println("op nome = "+op_nome);
-                String op_valor = instrucao.split("EQU")[1];
                 
-                tabela.add(new TabelaOperandos(op_nome,op_valor,"VAR") );  
+                String op_valor_str = instrucao.split("EQU")[1];
+                op_valor_str = op_valor_str.replaceAll("\\s+","");
+                int op_valor = Integer.parseInt(op_valor_str);
+                
+                System.out.println("i = "+i+"op_valor = "+op_valor);
+                updateMemoria(op_valor,i);
+                
+                tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") );  
             } 
             
             else if (instrucao.contains("DW")){
@@ -281,22 +294,32 @@ public class Emulador2 {
                 String op_valor = instrucao.split("DW")[1];
                 
                 tabela.add(new TabelaOperandos(op_nome,op_valor,"CONST") ); 
-            } 
-            
-            
-            
+            }
         
         } 
     
     }
     
+    
+    public static void tabela_get_operando(String opdRegex){
+        for (int i =0; i< TelaPrincipal.tabela.size(); i++){
+            TelaPrincipal.tabela.get(i).getName();
+            
+            
+        }
+        
+        
+        
+    }
+    
+    
+    
     public static void print_tabela(List<TabelaOperandos> tabela){    
         
     for (int i = 0; i<tabela.size();i++){
-        System.out.println(tabela.get(i).getName()+"-" + tabela.get(i).getValue()+ "-" + tabela.get(i).getType() +" -" +i);
+        System.out.println(tabela.get(i).getName()+"-" + tabela.get(i).getPosicaoNaMemoria()+ "-" + tabela.get(i).getType() +" -" +i);
         
-        
-        
+            
     }
     
     

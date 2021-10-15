@@ -1,5 +1,5 @@
-op1 EQU 8
-
+op1 EQU 12
+add AX 8
 add valorA
 mult valoB valorA
 load valorC

@@ -2,13 +2,13 @@ package assembly_simulator;
 
 public class TabelaOperandos {
     private String name;
-    private String value;
+    private String PosicaoNaMemoria;
     private String type;
-    private String tamanho;
+    
 
     public TabelaOperandos(String name, String value, String type){
         this.name = name;
-        this.value = value;
+        this.PosicaoNaMemoria = value;
         this.type = type;
         
     }
@@ -21,9 +21,9 @@ public class TabelaOperandos {
         this.type = type;
     }
 
-    public void setValue(String value) {
+    public void setPosicaoNaMemoria(String value) {
         if(type.equals("Const")){
-            this.value = value;
+            this.PosicaoNaMemoria = value;
         }else{
             System.out.println("Not permited chenges");
         }
@@ -38,8 +38,8 @@ public class TabelaOperandos {
         return type;
     }
 
-    public String getValue() {
-        return value;
+    public String getPosicaoNaMemoria() {
+        return PosicaoNaMemoria;
     }
 }
 
