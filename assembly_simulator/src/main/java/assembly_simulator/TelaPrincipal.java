@@ -573,8 +573,9 @@ public class TelaPrincipal extends javax.swing.JFrame{
 
         //-----
         
-        
+        Emulador2.run_instrucao(Emulador2.instrucoes.get(Emulador2.linha_atual));
         Emulador2.linha_atual++;
+        
         if(Emulador2.linha_atual >= Emulador2.instrucoes.size())Emulador2.linha_atual = 0;
         
         try{
@@ -628,7 +629,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }
             CodigoFonteField.setText(ArquivoCarregado);
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
-
+            Emulador2.updateRegistrador(1, "AX");
+            Emulador2.load_instrucoes();
             
             
             

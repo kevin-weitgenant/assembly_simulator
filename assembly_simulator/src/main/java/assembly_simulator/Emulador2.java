@@ -109,6 +109,8 @@ public class Emulador2 {
             String instrucao = instrucoes.get(i);
             if(instrucao.matches("add AX AX")){
                 updateMemoria(0x03C0,i );
+                int resultado = getRegistrador("AX") *2;
+                
             }
             
             /*
@@ -209,7 +211,7 @@ public class Emulador2 {
                 System.out.println("Instrução nao reconhecida!");
             }      
             */
-            
+            }   //APAGAR!!
             
         updateRegistrador(instrucoes.size(),6);  
             
@@ -224,9 +226,28 @@ public class Emulador2 {
             
             
         }
+     
+        
+    public static void run_instrucao(String instrucao){
+        
+            
+        
+        for (int i = 0; i< instrucoes.size(); i++){
+            
+            if(instrucao.matches("add AX AX")){
+                
+                int resultado = getRegistrador("AX") *2;
+                updateRegistrador(resultado,"AX");
+                break;
+            }
         
         
         
+        
+        
+        
+        
+        }
     }
     
     
