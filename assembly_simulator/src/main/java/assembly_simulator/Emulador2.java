@@ -7,7 +7,12 @@ package assembly_simulator;
 import static assembly_simulator.TelaPrincipal.listRegisterModel;
 import static assembly_simulator.TelaPrincipal.listMemoryModel;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+
 
 /**
  *
@@ -15,11 +20,14 @@ import java.util.List;
  */
 public class Emulador2 {
     static public List<String> instrucoes = new ArrayList<String>();
+ 
+   
+    
     
     public static int linha_atual;
     public static int IP = 0;
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
-    
+    static TabelaOperandos[] tabela;
 
     public static void  updateRegistrador(int valor,int posicao_reg){
         
@@ -54,7 +62,7 @@ public class Emulador2 {
         linha_reg = linha_reg.replaceAll("\\s+","");   
         return Integer.parseInt(linha_reg,16);
         
-        //RETORNA EM DECIMAL
+        
     }
     
     public static int getRegistrador(String nome_reg){   
@@ -241,15 +249,57 @@ public class Emulador2 {
                 break;
             }
         
+        // acrescentar
         
         
         
         
-        
-        
+      
         }
     }
     
     
+    
+    public static void tabela_operandos(List<TabelaOperandos> tabela){
+        //NOME_OPERANDO DW VALOR
+        
+        
+        for (int i = 0; i< instrucoes.size(); i++){    
+            String instrucao = instrucoes.get(i);
+            
+            if (instrucao.contains("EQU")){
+                
+                String op_nome = instrucao.split("EQU")[0];
+                System.out.println("op nome = "+op_nome);
+                String op_valor = instrucao.split("EQU")[1];
+                
+                tabela.add(new TabelaOperandos(op_nome,op_valor,"VAR") );  
+            } 
+            
+            else if (instrucao.contains("DW")){
+                String op_nome = instrucao.split("DW")[0];
+                String op_valor = instrucao.split("DW")[1];
+                
+                tabela.add(new TabelaOperandos(op_nome,op_valor,"CONST") ); 
+            } 
+            
+            
+            
+        
+        } 
+    
+    }
+    
+    public static void print_tabela(List<TabelaOperandos> tabela){    
+        
+    for (int i = 0; i<tabela.size();i++){
+        System.out.println(tabela.get(i).getName()+"-" + tabela.get(i).getValue()+ "-" + tabela.get(i).getType() +" -" +i);
+        
+        
+        
+    }
+    
+    
+    }
     
 }

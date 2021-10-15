@@ -57,7 +57,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
     
-
+    static public List<TabelaOperandos> tabela = new ArrayList<TabelaOperandos>();
    
     /**
      * Creates new form TelaPrincipal
@@ -602,8 +602,11 @@ public class TelaPrincipal extends javax.swing.JFrame{
         boolean linux = false;
         String ArquivoCarregado = new String("") ;
         String linha =new String();
-        String CaminhoDoArquivo =new String(System.getProperty("user.dir")+"\\src\\main\\java\\assembly_simulator\\file.txt"); 
+        String CaminhoDoArquivo =new String(System.getProperty("user.dir")+"/src/main/java/assembly_simulator/file.txt"); //novo
         BufferedReader buffRead; //reader do arquivo
+        
+        
+        
         try {
             System.out.println(linha);
             
@@ -631,6 +634,9 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
             Emulador2.updateRegistrador(1, "AX");
             Emulador2.load_instrucoes();
+            Emulador2.tabela_operandos(tabela);
+            
+            Emulador2.print_tabela(tabela);
             
             
             

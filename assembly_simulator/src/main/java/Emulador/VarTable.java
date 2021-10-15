@@ -5,6 +5,9 @@
  */
 package Emulador;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  *
@@ -15,6 +18,7 @@ class LinhaTable {
     String name;
     ArrayList<Integer> reference;
     Boolean status;
+    
 
     public LinhaTable(String nome, Boolean status, int reference) {
         this.name = nome;
