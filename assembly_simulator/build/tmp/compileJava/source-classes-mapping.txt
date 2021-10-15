@@ -19,6 +19,7 @@ assembly_simulator/TelaPrincipal.java
  assembly_simulator.TelaPrincipal$11
  assembly_simulator.TelaPrincipal$12
  assembly_simulator.TelaPrincipal$13
+ assembly_simulator.TelaPrincipal$14
  assembly_simulator.TelaPrincipal$2
  assembly_simulator.TelaPrincipal$3
  assembly_simulator.TelaPrincipal$4

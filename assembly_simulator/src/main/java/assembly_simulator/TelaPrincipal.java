@@ -56,6 +56,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     //private Emulador2 emulador2 = new Emulador2();
     
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
+    
 
    
     /**
@@ -117,6 +118,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         registers = new javax.swing.JList<>();
         registerLabel = new javax.swing.JLabel();
         comboBox = new javax.swing.JComboBox<>();
+        reset = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -437,6 +439,14 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }
         });
 
+        reset.setText("Reset");
+        reset.setToolTipText("Reset");
+        reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -446,7 +456,9 @@ public class TelaPrincipal extends javax.swing.JFrame{
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(terminalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
-                        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(reset, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(codePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -469,7 +481,9 @@ public class TelaPrincipal extends javax.swing.JFrame{
                         .addComponent(terminalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(49, 49, 49)
-                        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(reset)))
                 .addGap(0, 437, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(displayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -549,7 +563,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
     
     
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
-        
+        Highlighter highlighter = CodigoFonteField.getHighlighter();
+        highlighter.removeAllHighlights();
         
         Emulador2.updateRegistrador(4,Emulador2.getRegistrador(4)+1);  // INCREMENTAR IP
         Emulador2.updateMemoria(0,Emulador2.getMemoria(0)+1);
@@ -850,6 +865,35 @@ public class TelaPrincipal extends javax.swing.JFrame{
         
     }//GEN-LAST:event_comboBoxActionPerformed
 
+    private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
+        Emulador2.linha_atual = 0;
+        Highlighter highlighter = CodigoFonteField.getHighlighter();
+        
+        highlighter.removeAllHighlights();
+        
+        try{
+            
+        highlighInstrucoes(Emulador2.linha_atual);
+        }
+        
+        catch(Exception e){
+            
+        }
+        
+        for (int i = 0; i<listMemoryModel.size();i++){
+            Emulador2.updateMemoria(i, 0);
+        }
+        
+        for (int i = 0; i<listRegisterModel.size();i++){
+            Emulador2.updateRegistrador(i, 0);
+        }
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_resetActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -921,6 +965,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     private javax.swing.JScrollPane registerScroll;
     private javax.swing.JList<String> registers;
     private javax.swing.JPanel registersPanel;
+    private javax.swing.JButton reset;
     private javax.swing.JButton runAll;
     private javax.swing.JLabel terminalLabel;
     private javax.swing.JPanel terminalPanel;
