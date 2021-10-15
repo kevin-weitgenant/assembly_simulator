@@ -567,7 +567,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         highlighter.removeAllHighlights();
         
         Emulador2.updateRegistrador(Emulador2.getRegistrador(4)+1,4);  // INCREMENTAR IP
-        Emulador2.updateMemoria(Emulador2.getMemoria(0)+1,0);
+        
         
  
 

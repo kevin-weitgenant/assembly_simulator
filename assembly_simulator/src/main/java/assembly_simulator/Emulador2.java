@@ -56,10 +56,11 @@ public class Emulador2 {
     
 
     public static void load_instrucoes(){
+        String opdRegex=".*";
         for (int i = 0; i< instrucoes.size(); i++){
             String instrucao = instrucoes.get(i);
             if(instrucao.matches("add AX AX")){
-                updateMemoria(i, 0x03C0);
+                updateMemoria(0x03C0,i );
             }
             
             /*

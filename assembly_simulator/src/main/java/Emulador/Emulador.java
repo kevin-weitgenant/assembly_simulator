@@ -57,6 +57,8 @@ public class Emulador {
         String[] instructions = file.split("\\n");
         String opdRegex=".*";
         int j = 0, k = 0;
+        
+        
         for(int i =0;i<instructions.length;i++){
             String instruction = instructions[i].replace(","," ").replace("\\s+"," ");
             String[] words = instruction.split("(\\s|,)+");
