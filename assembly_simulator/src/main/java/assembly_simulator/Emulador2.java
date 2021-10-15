@@ -291,9 +291,15 @@ public class Emulador2 {
             
             else if (instrucao.contains("DW")){
                 String op_nome = instrucao.split("DW")[0];
-                String op_valor = instrucao.split("DW")[1];
                 
-                tabela.add(new TabelaOperandos(op_nome,op_valor,"CONST") ); 
+                String op_valor_str = instrucao.split("DW")[1];
+                op_valor_str = op_valor_str.replaceAll("\\s+","");
+                int op_valor = Integer.parseInt(op_valor_str);
+                
+                System.out.println("i = "+i+"op_valor = "+op_valor);
+                updateMemoria(op_valor,i);
+                
+                tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") ); 
             }
         
         } 

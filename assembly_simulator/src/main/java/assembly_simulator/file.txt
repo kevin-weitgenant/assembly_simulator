@@ -1,4 +1,6 @@
 op1 EQU 12
+op3 DW 8
+op3 DW 10
 add AX 8
 add valorA
 mult valoB valorA
@@ -9,7 +11,6 @@ op2 EQU 8
 space
 valorA 15
 valorB 20
-op3 DW 8
 valorC 50
 add AX AX
 hlt
