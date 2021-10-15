@@ -1,15 +1,13 @@
 Emulador/Emulador.java
  Emulador.Emulador
  Emulador.Emulador$paramTypes
+assembly_simulator/Emulador2.java
+ assembly_simulator.Emulador2
 Emulador/Util.java
  Emulador.Util
 Emulador/VarTable.java
  Emulador.LinhaTable
  Emulador.VarTable
-Emulador/Memory.java
- Emulador.Memory
-assembly_simulator/converter.java
- assembly_simulator.converter
 assembly_simulator/TelaPrincipal.java
  assembly_simulator.TelaPrincipal
  assembly_simulator.TelaPrincipal$1
@@ -25,3 +23,7 @@ assembly_simulator/TelaPrincipal.java
  assembly_simulator.TelaPrincipal$7
  assembly_simulator.TelaPrincipal$8
  assembly_simulator.TelaPrincipal$9
+assembly_simulator/converter.java
+ assembly_simulator.converter
+Emulador/Memory.java
+ Emulador.Memory

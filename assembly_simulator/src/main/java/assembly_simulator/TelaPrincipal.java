@@ -48,14 +48,14 @@ import javax.swing.text.Highlighter.HighlightPainter;
 public class TelaPrincipal extends javax.swing.JFrame{
 
     
-    private DefaultListModel<String> listMemoryModel = new DefaultListModel<>();
-    private DefaultListModel<String> listRegisterModel = new DefaultListModel<>();
+    protected static DefaultListModel<String> listMemoryModel = new DefaultListModel<>();
+    protected static DefaultListModel<String> listRegisterModel = new DefaultListModel<>();
     
     private boolean fbin,fhex,fdec;
     private String[] regis = new String[8];
-    private List<String> instrucoes = new ArrayList<String>();
+    //private Emulador2 emulador2 = new Emulador2();
     
-    private int linha_atual;
+    static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
 
    
     /**
@@ -63,8 +63,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
      */
     public TelaPrincipal() throws IOException{
         
-        this.linha_atual = 0;
-        this.fbin = true;
+        Emulador2.linha_atual = 0;
+        this.fhex = true;
         initComponents();
         configComponents();
         initMemoria();
@@ -429,7 +429,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
                 .addContainerGap())
         );
 
-        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bin", "Dec", "Hex" }));
+        comboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hex", "Dec", "Bin" }));
         comboBox.setName(""); // NOI18N
         comboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -499,14 +499,14 @@ public class TelaPrincipal extends javax.swing.JFrame{
         
         
         
-        regis[0] = "AX: 00000000 00001111";
-        regis[1] = "DX: 00000000 00000000";
-        regis[2] = "SP: 00000000 00000000";
-        regis[3] = "SI: 00000000 00000000";
-        regis[4] = "IP: 00000000 00000000";
-        regis[5] = "SR: 00000000 00000000";
-        regis[6] = "CS: 00000000 00000000";
-        regis[7] = "DS: 00000000 00000000";
+        regis[0] = "AX: 0x00";
+        regis[1] = "DX: 0x00";
+        regis[2] = "SP: 0x00";
+        regis[3] = "SI: 0x00";
+        regis[4] = "IP: 0x00";
+        regis[5] = "SR: 0x00";
+        regis[6] = "CS: 0x00";
+        regis[7] = "DS: 0x00";
         
         for(int i = 0; i<8; i++){       
             listRegisterModel.addElement(regis[i]);
@@ -531,12 +531,11 @@ public class TelaPrincipal extends javax.swing.JFrame{
       
       highlighter.removeAllHighlights();
       
-      linha = instrucoes.get(numero_linha);
+      linha = Emulador2.instrucoes.get(numero_linha);
       
       pos_0 = CodigoFonteField.getText().indexOf(linha);
       pos_1 = pos_0 + linha.length();
-      System.out.println("pos_0 = "+ pos_0);
-      System.out.println("pos_1 = "+ pos_1);
+
       highlighter.addHighlight(pos_0, pos_1, painter );  
       
       
@@ -545,17 +544,27 @@ public class TelaPrincipal extends javax.swing.JFrame{
     
  
     
+
+    
+    
     
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
         
- 
         
-        linha_atual++;
-        if(linha_atual >= instrucoes.size())linha_atual = 0;
+        Emulador2.updateRegistrador(4,Emulador2.getRegistrador(4)+1);  // INCREMENTAR IP
+        
+        
+ 
+
+        //-----
+        
+        
+        Emulador2.linha_atual++;
+        if(Emulador2.linha_atual >= Emulador2.instrucoes.size())Emulador2.linha_atual = 0;
         
         try{
             
-        highlighInstrucoes(linha_atual);
+        highlighInstrucoes(Emulador2.linha_atual);
         }
         
         catch(Exception e){
@@ -603,7 +612,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
                 linha= buffRead.readLine();
             }
             CodigoFonteField.setText(ArquivoCarregado);
-            instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
+            Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
 
             
             
@@ -654,7 +663,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         String linha;
         String reg_linha;
         
-        String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
+        
         
         
         
