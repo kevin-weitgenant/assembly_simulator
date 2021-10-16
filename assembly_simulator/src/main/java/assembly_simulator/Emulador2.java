@@ -73,7 +73,7 @@ public class Emulador2 {
         
         
         
-        String new_content = String.format("0x%02X",valor);
+        String new_content = String.format("0x%04X",valor);
         listRegisterModel.setElementAt(aux_reg[posicao_reg] +new_content, posicao_reg);
         
     } 
@@ -136,7 +136,7 @@ public class Emulador2 {
     }
     
     public static void updateMemoria( int valor, int posicao_palavra){
-        String new_content = String.format("0x%02X",valor);
+        String new_content = String.format("0x%04X",valor);
         new_content = String.format("%04d", posicao_palavra) + ": " + new_content ;
         listMemoryModel.setElementAt(""+new_content, posicao_palavra);        
         
@@ -144,30 +144,30 @@ public class Emulador2 {
     
 
     public static void load_instrucoes(){
-        
+        int controle_mem = 0;
         
         for (int i = 0; i< instrucoes.size(); i++){
-            int posicao = getRegistrador("CS")+i;
+            int posicao = getRegistrador("CS")+controle_mem;
             
             String instrucao = instrucoes.get(i);
             if(instrucao.matches("add AX,AX")){
                
                 updateMemoria(0x03C0,posicao );
+                controle_mem++;
                    
             }
             
             
             else if(instrucao.matches("add AX,DX")){
                 updateMemoria(0x03C2, posicao);
+                controle_mem++;
                 
             }else if(instrucao.matches("add AX,.*")){
                 updateMemoria(0x05, posicao++);
                 String opd = instrucao.split("AX,")[1];
                 opd = opd.replaceAll("\\s+","");
-
-                
                 updateMemoria(calculateOpd(opd),posicao);
-
+                controle_mem+=2;
                     
             }else if(instrucao.matches("div SI")){
                 updateMemoria(0xf7f6, posicao);
@@ -330,6 +330,7 @@ public class Emulador2 {
                 
                 updateMemoria(calculateOpd(opd),posicao);
             }else if(instrucao ==""||instrucao.contains("EQU") || instrucao.contains("DW")){
+                posicao--;
 
             }
 
@@ -359,7 +360,7 @@ public class Emulador2 {
 
         
         if(opd.matches("[0-1]+b")){
-            int valor = Integer.parseInt(converter.binToHex(opd));
+            int valor = Integer.parseInt(converter.binToHex(opd),16);
             updateMemoria(valor,++apontador_memLixo);
             return apontador_memLixo;
             
@@ -368,7 +369,7 @@ public class Emulador2 {
             updateMemoria(valor,++apontador_memLixo);
             return apontador_memLixo;
         }else if(opd.matches("[0-9]+")){
-            int valor = Integer.parseInt(converter.decToHex(opd));
+            int valor = Integer.parseInt(converter.decToHex(opd),16);
             updateMemoria(valor,++apontador_memLixo);
             return apontador_memLixo;
         }

@@ -501,7 +501,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         String[] memo = new String[4096];
         
         for(int i = 0; i<4096; i++){
-            memo[i] = String.format("%04d", i) + ":" + " 0x00";
+            memo[i] = String.format("%04d", i) + ":" + " 0x0000";
             listMemoryModel.addElement(memo[i]);
             //System.out.printf("Memoria: \n" + ListModel.get(i));
         }
@@ -513,14 +513,14 @@ public class TelaPrincipal extends javax.swing.JFrame{
         
         
         
-        regis[0] = "AX: 0x00";
-        regis[1] = "DX: 0x00";
-        regis[2] = "SP: 0x00";
-        regis[3] = "SI: 0x00";
-        regis[4] = "IP: 0x00";
-        regis[5] = "SR: 0x00";
-        regis[6] = "CS: 0x00";
-        regis[7] = "DS: 0x00";
+        regis[0] = "AX: 0x0000";
+        regis[1] = "DX: 0x0000";
+        regis[2] = "SP: 0x0000";
+        regis[3] = "SI: 0x0000";
+        regis[4] = "IP: 0x0000";
+        regis[5] = "SR: 0x0000";
+        regis[6] = "CS: 0x0000";
+        regis[7] = "DS: 0x0000";
         
         for(int i = 0; i<8; i++){       
             listRegisterModel.addElement(regis[i]);
