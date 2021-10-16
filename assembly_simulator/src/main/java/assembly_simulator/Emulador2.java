@@ -40,7 +40,14 @@ public class Emulador2 {
     public static int IP = 0;
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
     static TabelaOperandos[] tabela;
-
+    
+    protected static final int DS = 11;
+    protected static final int CS = 2012;
+    protected static final int SP = 2;
+    
+    public static Map<String, List<String>> tabela_opds = new HashMap<String, List<String>>();
+    
+    
     public static void  updateRegistrador(int valor,int posicao_reg){
         
         String new_content = String.format("0x%04X",valor);
@@ -106,21 +113,13 @@ public class Emulador2 {
 // SEGMENTO DE DADOS = 11-2011
 
 //SEGMENTO DE INSTRUCOES = 2012-4095
-        updateRegistrador(2730,"DS");
-        updateRegistrador(2012,"CS");
-        updateRegistrador(2,"SP");
+        updateRegistrador(DS,"DS");
+        updateRegistrador(CS,"CS");
+        updateRegistrador(SP,"SP");
 
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     public static int getMemoria(int posicao_palavra){
         String linha_mem = listMemoryModel.getElementAt(posicao_palavra);
         linha_mem = linha_mem.split("0x")[1];
@@ -139,12 +138,9 @@ public class Emulador2 {
     }
     
 
-    
-    
-    
-
     public static void load_instrucoes(){
-        String opdRegex=".*";
+        
+        
         for (int i = 0; i< instrucoes.size(); i++){
             int posicao = getRegistrador("CS")+i+1;
             
@@ -152,8 +148,7 @@ public class Emulador2 {
             if(instrucao.matches("add AX AX")){
                 System.out.println("posicao = "+getRegistrador("CS"));
                 updateMemoria(0x03C0,posicao );
-                
-                
+                   
             }
             
             
@@ -164,6 +159,7 @@ public class Emulador2 {
                 updateMemoria(0x05, i++);
                 String opd = instrucao.split("AX")[1];
                 opd = opd.replaceAll("\\s+","");
+                calculateOpd(opd);
                 
                 //int valor_opd = tabela_get_operando(opdRegex);
                 //updateMemoria(valor_opd,i);
@@ -275,7 +271,48 @@ public class Emulador2 {
             
         }
     }
+      
+    
+    public static int calculateOpd(String opd){
+        if(opd.matches("[0-1]+b")){
+            int valor = Integer.parseInt(converter.binToHex(opd));
+            updateMemoria(valor,CS-1);
+            return CS-1;
+            
+        }else if(opd.matches("0x[0-9a-fA-F]+")){
+            int valor = Integer.parseInt(opd);
+            updateMemoria(valor,CS-1);
+            return CS-1;
+        }else if(opd.matches("[0-9]+")){
+            int valor = Integer.parseInt(converter.decToHex(opd));
+            updateMemoria(valor,CS-1);
+            return CS-1;
+        }
         
+        
+        else if(opd.matches("[A-Za-z][A-Za-z0-9]*")){
+           // getOpdValue(opd);
+           return 0;
+            
+ 
+        }
+        return -1;
+        
+           
+    }
+    
+    /*
+    public static int getOpdValue(String opd){
+        for 
+        
+        
+        
+    }
+    */
+    
+    
+    
+    
     public static void run_instrucao(String instrucao){
         
             
@@ -323,7 +360,7 @@ public class Emulador2 {
                 
                 updateMemoria(op_valor,posicao);
                 
-                tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") );  
+                tabela.add(new TabelaOperandos(op_nome,""+i,"CONST") );  
             } 
             
             else if (instrucao.contains("DW")){
@@ -345,16 +382,7 @@ public class Emulador2 {
     }
     
     
-    public static void tabela_get_operando(String opdRegex){
-        for (int i =0; i< TelaPrincipal.tabela.size(); i++){
-            TelaPrincipal.tabela.get(i).getName();
-            
-            
-        }
-        
-        
-        
-    }
+
     
     
     
