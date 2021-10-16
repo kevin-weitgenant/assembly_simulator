@@ -1,3 +1,4 @@
+add AX,op1
 add AX AX
 op1 EQU 12
 op4 DW 8

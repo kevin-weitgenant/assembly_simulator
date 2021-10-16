@@ -161,11 +161,13 @@ public class Emulador2 {
                 updateMemoria(0x03C2, posicao);
                 
             }else if(instrucao.matches("add AX,.*")){
-                updateMemoria(0x05, i++);
+                updateMemoria(0x05, posicao++);
                 String opd = instrucao.split("AX,")[1];
                 opd = opd.replaceAll("\\s+","");
-                System.out.println("opd = "+ opd);
-                calculateOpd(opd);
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+
                 
                 //int valor_opd = tabela_get_operando(opdRegex);
                 //updateMemoria(valor_opd,i);
@@ -299,7 +301,9 @@ public class Emulador2 {
         
         
         else if(opd.matches("[A-Za-z][A-Za-z0-9]*")){
+
             if(tabela_opds.keySet().contains(opd)){
+                
                 return tabela_opds.get(opd).get(0);
                 
             }
@@ -362,7 +366,7 @@ public class Emulador2 {
             
             if (instrucao.contains("EQU")){
                 
-                String op_nome = instrucao.split("EQU")[0];
+                String op_nome = instrucao.split("EQU")[0].trim();
                 
                 String op_valor_str = instrucao.split("EQU")[1];
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
