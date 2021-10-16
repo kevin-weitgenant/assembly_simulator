@@ -1,16 +1,8 @@
-op1 EQU 12
-op3 DW 8
-op3 DW 10
-add AX 8
-add valorA
-mult valoB valorA
-load valorC
-store ValorB
-stop
-op2 EQU 8
-space
-valorA 15
-valorB 20
-valorC 50
+add AX DX
+add AX DX
+add AX DX
 add AX AX
+add AX AX
+var EQU 4
+add AX var
 hlt
