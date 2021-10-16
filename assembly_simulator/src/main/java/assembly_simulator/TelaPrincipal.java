@@ -9,6 +9,7 @@ package assembly_simulator;/* Os valores da
 * A caixa do código fonte é um campo de texto que pode ser editado. Use o método codigoFonteField.getText() 
 * para pegar o texto. Ao carregar um arquivo no botão "Carregar Arquivo" basta setar o texto com o método codigoFonteField.setText().
 */
+
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -52,7 +53,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
     protected static DefaultListModel<String> listRegisterModel = new DefaultListModel<>();
     
     private boolean fbin,fhex,fdec;
-    private String[] regis = new String[8];
+    private String[] regis = new String[9];
+    int linhaIluminada = 0;
     //private Emulador2 emulador2 = new Emulador2();
     
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
@@ -64,17 +66,12 @@ public class TelaPrincipal extends javax.swing.JFrame{
      */
     public TelaPrincipal() throws IOException{
         
-        Emulador2.linha_atual = 0;
         this.fhex = true;
         initComponents();
-        configComponents();
         initMemoria();
         initRegister();
     }
-    
-    private void configComponents() throws IOException {
-        outputScreenLabel.setText("testando");
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,7 +161,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
 
         displayInputLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         displayInputLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        displayInputLabel.setText("<html><body>Digite um Registrador ou<br>vari�vel para ser exibido</body></html>");
+        displayInputLabel.setText("<html><body>Digite um Registrador ou<br>vari�vel para ser exibido</body></html>");
         displayPanel.add(displayInputLabel);
         displayInputLabel.setBounds(40, 284, 180, 40);
 
@@ -181,6 +178,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         outputScreenLabel.setText("Var: 15");
         displayPanel.add(outputScreenLabel);
         outputScreenLabel.setBounds(50, 90, 130, 110);
+        outputScreenLabel.setText("Output here");
 
         imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imageLabel.setIcon(new javax.swing.ImageIcon("C:\\Users\\kevin\\Desktop\\agoravai\\assembly_simulator\\assembly_simulator\\src\\main\\java\\assembly_simulator\\computerImage.jpg")); // NOI18N
@@ -199,7 +197,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         codigoFonteLabel.setBackground(new java.awt.Color(0, 0, 0));
         codigoFonteLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         codigoFonteLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        codigoFonteLabel.setText("C�digo Fonte");
+        codigoFonteLabel.setText("C�digo Fonte");
         codigoFonteLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         CodigoFonteField.setColumns(20);
@@ -272,7 +270,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         memoriaLabel.setBackground(new java.awt.Color(0, 0, 0));
         memoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         memoriaLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        memoriaLabel.setText("Endere�os de Memoria");
+        memoriaLabel.setText("Endere�os de Memoria");
         memoriaLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         memoria.setModel(new javax.swing.AbstractListModel<String>() {
@@ -288,7 +286,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }
         });
 
-        localizaMemoryButton.setText("Localizar mem�ria");
+        localizaMemoryButton.setText("Localizar mem�ria");
         localizaMemoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 localizaMemoryButtonActionPerformed(evt);
@@ -501,28 +499,26 @@ public class TelaPrincipal extends javax.swing.JFrame{
         String[] memo = new String[4096];
         
         for(int i = 0; i<4096; i++){
-            memo[i] = String.format("%04d", i) + ":" + " 0x00";
+            memo[i] = String.format("%04d", i) + ":" + " 00 00";
             listMemoryModel.addElement(memo[i]);
             //System.out.printf("Memoria: \n" + ListModel.get(i));
         }
-        memoria.setModel(listMemoryModel);
-        
+        memoria.setModel(listMemoryModel);  
     }
     
     public void initRegister(){
+
+        regis[0] = "AX: 1";
+        regis[1] = "DX: 1";
+        regis[2] = "SP: 00 00";
+        regis[3] = "SI: 00 00";
+        regis[4] = "IP: 00 00";
+        regis[5] = "SR: 00 00";
+        regis[6] = "CS: 1000";
+        regis[7] = "DS: 3000";
+        regis[8] = "SS: 0002";
         
-        
-        
-        regis[0] = "AX: 0x00";
-        regis[1] = "DX: 0x00";
-        regis[2] = "SP: 0x00";
-        regis[3] = "SI: 0x00";
-        regis[4] = "IP: 0x00";
-        regis[5] = "SR: 0x00";
-        regis[6] = "CS: 0x00";
-        regis[7] = "DS: 0x00";
-        
-        for(int i = 0; i<8; i++){       
+        for(int i = 0; i<9; i++){       
             listRegisterModel.addElement(regis[i]);
             
         }
@@ -550,44 +546,27 @@ public class TelaPrincipal extends javax.swing.JFrame{
       pos_0 = CodigoFonteField.getText().indexOf(linha);
       pos_1 = pos_0 + linha.length();
 
-      highlighter.addHighlight(pos_0, pos_1, painter );  
-      
-      
-        
+      highlighter.addHighlight(pos_0, pos_1, painter );    
     }
-    
- 
-    
 
-    
-    
-    
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         highlighter.removeAllHighlights();
-        
-        Emulador2.updateRegistrador(Emulador2.getRegistrador(4)+1,4);  // INCREMENTAR IP
-        
-        
- 
 
-        //-----
+        String currentMemoryInstruction = listMemoryModel.get(Emulador2.linha_atual()+1);
+        Emulador2.runNextStep(currentMemoryInstruction);
         
-        Emulador2.run_instrucao(Emulador2.instrucoes.get(Emulador2.linha_atual));
-        Emulador2.linha_atual++;
-        
-        if(Emulador2.linha_atual >= Emulador2.instrucoes.size())Emulador2.linha_atual = 0;
+        linhaIluminada++;
+        if(linhaIluminada >= Emulador2.instrucoes.size()) linhaIluminada = 0;
         
         try{
             
-        highlighInstrucoes(Emulador2.linha_atual);
+         highlighInstrucoes(linhaIluminada);
         }
         
         catch(Exception e){
             
-        }
-
-        
+        } 
         
     }//GEN-LAST:event_nextStepActionPerformed
 
@@ -602,11 +581,9 @@ public class TelaPrincipal extends javax.swing.JFrame{
         boolean linux = false;
         String ArquivoCarregado = new String("") ;
         String linha =new String();
-        String CaminhoDoArquivo =new String(System.getProperty("user.dir")+"/src/main/java/assembly_simulator/file.txt"); //novo
+        String CaminhoDoArquivo =new String("assembly_simulator/src/main/java/assembly_simulator/file.txt"); //novo
         BufferedReader buffRead; //reader do arquivo
-        
-        
-        
+ 
         try {
             System.out.println(linha);
             
@@ -622,9 +599,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             if(linux){
                 buffRead = new BufferedReader(new FileReader("./file.txt"));
             }
-            
-            
-            
+
             linha = buffRead.readLine();
             while (linha!=null) {                
                 ArquivoCarregado=ArquivoCarregado.concat(linha+"\n");
@@ -634,19 +609,11 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
             
             Emulador2.InitRegistradores();
-            Emulador2.updateRegistrador(1, "AX");
+            Emulador2.updateRegistrador("1", "AX");
             Emulador2.load_instrucoes();
             Emulador2.tabela_operandos(tabela);
-            
+            memoria.ensureIndexIsVisible(1011); // Mostra instruções carregadas na memória
 
-            
-            Emulador2.tabela_operandos(tabela);
-
-            Emulador2.InitRegistradores();
-            
-
-            
-            
             buffRead.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -693,105 +660,79 @@ public class TelaPrincipal extends javax.swing.JFrame{
     private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
         String linha;
         String reg_linha;
-        
-        
-        
-        
-        
-         
+
         if (comboBox.getSelectedItem().equals("Hex")){
             if (fbin){
-                
-               
-            for (int aux = 0; aux< regis.length; aux++){
-                reg_linha = listRegisterModel.getElementAt(aux);
-                reg_linha = reg_linha.split(":")[1];
-                reg_linha = reg_linha.replaceAll("\\s+","");
-                
-                listRegisterModel.setElementAt(aux_reg[aux] + converter.binToHex(reg_linha), aux);
-                
-            }
+        
+                for (int aux = 0; aux< regis.length; aux++){
+                    reg_linha = listRegisterModel.getElementAt(aux);
+                    reg_linha = reg_linha.split(":")[1];
+                    reg_linha = reg_linha.replaceAll("\\s+","");
+                    
+                    listRegisterModel.setElementAt(aux_reg[aux] + converter.binToHex(reg_linha), aux);   
+                }
             }
             
             else if(fdec){
-             for (int aux = 0; aux< regis.length; aux++){
-                reg_linha = listRegisterModel.getElementAt(aux);
-                reg_linha = reg_linha.split(":")[1];
-                reg_linha = reg_linha.replaceAll("\\s+","");
-                
-                listRegisterModel.setElementAt(aux_reg[aux] + converter.decToHex(reg_linha), aux);
-                
-            }               
-                
+                for (int aux = 0; aux< regis.length; aux++){
+                    reg_linha = listRegisterModel.getElementAt(aux);
+                    reg_linha = reg_linha.split(":")[1];
+                    reg_linha = reg_linha.replaceAll("\\s+","");
+
+                    listRegisterModel.setElementAt(aux_reg[aux] + converter.decToHex(reg_linha), aux);
+                }               
             }
-            
-   
-            
+ 
             //memória
             for(int i = 0; i< memoria.getModel().getSize();i++){
                 linha = memoria.getModel().getElementAt(i);
                 linha = linha.split(":")[1];
                 linha = linha.replaceAll("\\s+","");
                 if( fbin){
-                linha = converter.binToHex(linha);
-                linha = String.format("%04d", i) + ": " + linha;  
-                listMemoryModel.setElementAt(linha, i);
-                
-
-                
-                
+                    linha = converter.binToHex(linha);
+                    linha = String.format("%04d", i) + ": " + linha;  
+                    listMemoryModel.setElementAt(linha, i);
+     
                 }
                 
                 else if(fdec){
-                linha = converter.decToHex(linha); 
-                linha = String.format("%04d", i) + ": " + linha;
-                listMemoryModel.setElementAt(linha, i);
+                    linha = converter.decToHex(linha); 
+                    linha = String.format("%04d", i) + ": " + linha;
+                    listMemoryModel.setElementAt(linha, i);
                   
                 }
-                
-                
-                
-
             }   
             fhex = true;
             fbin = false;
             fdec = false;
-            
         }
         
         else if (comboBox.getSelectedItem().equals("Dec")){
             if (fbin){
                 
-               
-            for (int aux = 0; aux< regis.length; aux++){
-                reg_linha = listRegisterModel.getElementAt(aux);
-                reg_linha = reg_linha.split(":")[1];
-                reg_linha = reg_linha.replaceAll("\\s+","");
-                
-                listRegisterModel.setElementAt(aux_reg[aux] + converter.binToDec(reg_linha), aux);
-                
-            }
+                for (int aux = 0; aux< regis.length; aux++){
+                    reg_linha = listRegisterModel.getElementAt(aux);
+                    reg_linha = reg_linha.split(":")[1];
+                    reg_linha = reg_linha.replaceAll("\\s+","");
+                    
+                    listRegisterModel.setElementAt(aux_reg[aux] + converter.binToDec(reg_linha), aux);
+                    
+                }
             }
             
             else if(fhex){
-             for (int aux = 0; aux< regis.length; aux++){
+                for (int aux = 0; aux< regis.length; aux++){
                 reg_linha = listRegisterModel.getElementAt(aux);
                 reg_linha = reg_linha.split(":")[1];
                 reg_linha = reg_linha.replaceAll("\\s+","");
                 
                 listRegisterModel.setElementAt(aux_reg[aux] + converter.hexToDec(reg_linha), aux);
                 
-            }               
+                }               
                 
             }
             
-            
-            
-            
-            
-            
-            
-            
+
                 for(int i = 0; i< memoria.getModel().getSize();i++){
                 linha = memoria.getModel().getElementAt(i);
                 linha = linha.split(":")[1];
@@ -799,56 +740,48 @@ public class TelaPrincipal extends javax.swing.JFrame{
                 
                 
                 if( fbin){
-                linha = converter.binToDec(linha);
-                linha = String.format("%04d", i) + ": " + linha;  
-                listMemoryModel.setElementAt(linha, i);
+                    linha = converter.binToDec(linha);
+                    linha = String.format("%04d", i) + ": " + linha;  
+                    listMemoryModel.setElementAt(linha, i);
                 }
                 
                 else if(fhex){
-                linha = converter.hexToDec(linha); 
-                linha = String.format("%04d", i) + ": " + linha;
-                listMemoryModel.setElementAt(linha, i);
-                  
+                    linha = converter.hexToDec(linha); 
+                    linha = String.format("%04d", i) + ": " + linha;
+                    listMemoryModel.setElementAt(linha, i); 
                 }
                
             }   
             fhex = false;
             fbin = false;
             fdec = true;               
-            
-            
+       
         }
         
         else if (comboBox.getSelectedItem().equals("Bin")){
             
-            if (fhex){
+            if (fhex){   
+                for (int aux = 0; aux< regis.length; aux++){
+                    reg_linha = listRegisterModel.getElementAt(aux);
+                    reg_linha = reg_linha.split(":")[1];
+                    reg_linha = reg_linha.replaceAll("\\s+","");
+                    
+                    listRegisterModel.setElementAt(aux_reg[aux] + converter.hexToBin(reg_linha), aux);
                 
-               
-            for (int aux = 0; aux< regis.length; aux++){
-                reg_linha = listRegisterModel.getElementAt(aux);
-                reg_linha = reg_linha.split(":")[1];
-                reg_linha = reg_linha.replaceAll("\\s+","");
-                
-                listRegisterModel.setElementAt(aux_reg[aux] + converter.hexToBin(reg_linha), aux);
-                
-            }
+                }
             }
             
             else if(fdec){
-             for (int aux = 0; aux< regis.length; aux++){
-                reg_linha = listRegisterModel.getElementAt(aux);
-                reg_linha = reg_linha.split(":")[1];
-                reg_linha = reg_linha.replaceAll("\\s+","");
-                
-                listRegisterModel.setElementAt(aux_reg[aux] + converter.decToBin(reg_linha), aux);
-                
-            }               
+               for (int aux = 0; aux< regis.length; aux++){
+                    reg_linha = listRegisterModel.getElementAt(aux);
+                    reg_linha = reg_linha.split(":")[1];
+                    reg_linha = reg_linha.replaceAll("\\s+","");
+                    
+                    listRegisterModel.setElementAt(aux_reg[aux] + converter.decToBin(reg_linha), aux);  
+                 }               
                 
             }
-            
-            
-            
-            
+  
             for(int i = 0; i< memoria.getModel().getSize();i++){
                 linha = memoria.getModel().getElementAt(i);
                 linha = linha.split(":")[1];
@@ -856,15 +789,15 @@ public class TelaPrincipal extends javax.swing.JFrame{
                 
                 
                 if( fhex){
-                linha = converter.hexToBin(linha);
-                linha = String.format("%04d", i) + ": " + linha;  
-                listMemoryModel.setElementAt(linha, i);
+                    linha = converter.hexToBin(linha);
+                    linha = String.format("%04d", i) + ": " + linha;  
+                    listMemoryModel.setElementAt(linha, i);
                 }
                 
                 else if(fdec){
-                linha = converter.decToBin(linha); 
-                linha = String.format("%04d", i) + ": " + linha;
-                listMemoryModel.setElementAt(linha, i);
+                    linha = converter.decToBin(linha); 
+                    linha = String.format("%04d", i) + ": " + linha;
+                    listMemoryModel.setElementAt(linha, i);
                   
                 }
                
@@ -872,24 +805,20 @@ public class TelaPrincipal extends javax.swing.JFrame{
             fhex = false;
             fbin = true;
             fdec = false;                  
-            
-            
+ 
         }
-                
-        
-        
-        
+     
     }//GEN-LAST:event_comboBoxActionPerformed
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-        Emulador2.linha_atual = 0;
+        linhaIluminada = 0;
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         
         highlighter.removeAllHighlights();
         
         try{
             
-        highlighInstrucoes(Emulador2.linha_atual);
+            highlighInstrucoes(linhaIluminada);
         }
         
         catch(Exception e){
@@ -897,17 +826,13 @@ public class TelaPrincipal extends javax.swing.JFrame{
         }
         
         for (int i = 0; i<listMemoryModel.size();i++){
-            Emulador2.updateMemoria(0, i);
+            Emulador2.updateMemoria("0", i);
         }
         
         for (int i = 0; i<listRegisterModel.size();i++){
-            Emulador2.updateRegistrador(0,i );
+            Emulador2.updateRegistrador("0",i );
         }
-        
-        
-        
-        
-        
+  
     }//GEN-LAST:event_resetActionPerformed
 
     /**
