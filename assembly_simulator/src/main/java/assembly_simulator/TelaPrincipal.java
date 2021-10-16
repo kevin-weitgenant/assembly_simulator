@@ -638,13 +638,13 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.load_instrucoes();
             Emulador2.tabela_operandos(tabela);
             
-<<<<<<< HEAD
+
             
             Emulador2.tabela_operandos(tabela);
-=======
+
             Emulador2.InitRegistradores();
             
->>>>>>> parent of bafd8cc (adicionando no segmento de dados respeitando oq foi setado fixamente pras posições dos segmentos)
+
             
             
             buffRead.close();

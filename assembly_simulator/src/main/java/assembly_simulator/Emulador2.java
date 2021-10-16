@@ -319,8 +319,9 @@ public class Emulador2 {
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
                 int op_valor = Integer.parseInt(op_valor_str);
                 
+                int posicao = i+getRegistrador("DS");
                 
-                updateMemoria(op_valor,i);
+                updateMemoria(op_valor,posicao);
                 
                 tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") );  
             } 
@@ -332,8 +333,9 @@ public class Emulador2 {
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
                 int op_valor = Integer.parseInt(op_valor_str);
                 
+                int posicao = i+getRegistrador("DS");
                 
-                updateMemoria(op_valor,i);
+                updateMemoria(op_valor,posicao);
                 
                 tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") ); 
             }
