@@ -45,7 +45,12 @@ public class Emulador2 {
     protected static final int CS = 2012;
     protected static final int SP = 2;
     
+    protected static int apontador_memLixo = DS;
+    
     public static Map<String, List<Integer>> tabela_opds = new HashMap<String, List<Integer>>();
+    
+    
+    
     
     
     public static void  updateRegistrador(int valor,int posicao_reg){
@@ -145,20 +150,21 @@ public class Emulador2 {
             int posicao = getRegistrador("CS")+i;
             
             String instrucao = instrucoes.get(i);
-            if(instrucao.matches("add AX AX")){
+            if(instrucao.matches("add AX,AX")){
                
                 updateMemoria(0x03C0,posicao );
                    
             }
             
             
-            else if(instrucao.matches("add AX DX")){
+            else if(instrucao.matches("add AX,DX")){
                 updateMemoria(0x03C2, posicao);
                 
-            }else if(instrucao.matches("add AX.*")){
+            }else if(instrucao.matches("add AX,.*")){
                 updateMemoria(0x05, i++);
-                String opd = instrucao.split("AX")[1];
+                String opd = instrucao.split("AX,")[1];
                 opd = opd.replaceAll("\\s+","");
+                System.out.println("opd = "+ opd);
                 calculateOpd(opd);
                 
                 //int valor_opd = tabela_get_operando(opdRegex);
@@ -274,19 +280,21 @@ public class Emulador2 {
       
     
     public static int calculateOpd(String opd){
+
+        
         if(opd.matches("[0-1]+b")){
             int valor = Integer.parseInt(converter.binToHex(opd));
-            updateMemoria(valor,CS-1);
-            return CS-1;
+            updateMemoria(valor,++apontador_memLixo);
+            return apontador_memLixo;
             
         }else if(opd.matches("0x[0-9a-fA-F]+")){
             int valor = Integer.parseInt(opd);
-            updateMemoria(valor,CS-1);
-            return CS-1;
+            updateMemoria(valor,++apontador_memLixo);
+            return apontador_memLixo;
         }else if(opd.matches("[0-9]+")){
             int valor = Integer.parseInt(converter.decToHex(opd));
-            updateMemoria(valor,CS-1);
-            return CS-1;
+            updateMemoria(valor,++apontador_memLixo);
+            return apontador_memLixo;
         }
         
         
@@ -324,7 +332,7 @@ public class Emulador2 {
         
         for (int i = 0; i< instrucoes.size(); i++){
             
-            if(instrucao.matches("add AX AX")){    //ta errado tem quer ser pelos os códigos das instruções, burrei
+            if(instrucao.matches("add AX,AX")){    //ta errado tem quer ser pelos os códigos das instruções, burrei
                 
                 int resultado = getRegistrador("AX") *2;
                 updateRegistrador(resultado,"AX");
@@ -348,7 +356,7 @@ public class Emulador2 {
     
     public static void tabela_operandos(){
 
-        
+        int controle = 0;
         for (int i = 0; i< instrucoes.size(); i++){    
             String instrucao = instrucoes.get(i);
             
@@ -360,10 +368,12 @@ public class Emulador2 {
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
                 int op_valor = Integer.parseInt(op_valor_str);
                 
-                int posicao = i+getRegistrador("DS");
+                int posicao = controle+getRegistrador("DS");
                 
                 updateMemoria(op_valor,posicao);
-                tabela_opds.put(op_nome, Arrays.asList(DS+i,0));
+                tabela_opds.put(op_nome, Arrays.asList(posicao,0));
+                apontador_memLixo++;
+                controle++;
                      
             } 
             
@@ -374,11 +384,13 @@ public class Emulador2 {
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
                 int op_valor = Integer.parseInt(op_valor_str);
                 
-                int posicao = i+getRegistrador("DS");
+                int posicao = controle+getRegistrador("DS");
                 
                 updateMemoria(op_valor,posicao);
                 
-                tabela_opds.put(op_nome, Arrays.asList(DS+i,1));
+                tabela_opds.put(op_nome, Arrays.asList(posicao,1));
+                apontador_memLixo++;
+                controle++;
                 
                 
             }
@@ -386,10 +398,6 @@ public class Emulador2 {
         } 
     
     }
-    
-    
-
-    
     
     
     public static void print_tabela(){    

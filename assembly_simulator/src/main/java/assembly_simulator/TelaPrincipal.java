@@ -634,7 +634,11 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
             
             Emulador2.InitRegistradores();
+            Emulador2.updateRegistrador(1,"AX");
+            
+            
             Emulador2.tabela_operandos();
+            Emulador2.print_tabela();
             
             Emulador2.load_instrucoes();
             
@@ -665,6 +669,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     private void localizaMemoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_localizaMemoryButtonActionPerformed
         // TODO add your handling code here:
         String str = localizaMemoryField.getText();
+        
         memoria.ensureIndexIsVisible(Integer.parseInt(str));
     }//GEN-LAST:event_localizaMemoryButtonActionPerformed
 
