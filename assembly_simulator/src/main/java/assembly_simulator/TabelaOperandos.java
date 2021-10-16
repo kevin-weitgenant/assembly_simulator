@@ -25,7 +25,7 @@ public class TabelaOperandos {
         if(type.equals("Const")){
             this.PosicaoNaMemoria = value;
         }else{
-            System.out.println("Not permited changes");
+            System.out.println("Not permited chenges");
         }
        
     }

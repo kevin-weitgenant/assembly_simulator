@@ -43,7 +43,7 @@ public class Emulador2 {
 
     public static void  updateRegistrador(int valor,int posicao_reg){
         
-        String new_content = String.format("0x%02X",valor);
+        String new_content = String.format("0x%04X",valor);
         listRegisterModel.setElementAt(aux_reg[posicao_reg] +new_content, posicao_reg);
         
     } 
@@ -106,7 +106,7 @@ public class Emulador2 {
 // SEGMENTO DE DADOS = 11-2011
 
 //SEGMENTO DE INSTRUCOES = 2012-4095
-        updateRegistrador(11,"DS");
+        updateRegistrador(2730,"DS");
         updateRegistrador(2012,"CS");
         updateRegistrador(2,"SP");
 
@@ -146,21 +146,25 @@ public class Emulador2 {
     public static void load_instrucoes(){
         String opdRegex=".*";
         for (int i = 0; i< instrucoes.size(); i++){
+            int posicao = getRegistrador("CS")+i+1;
+            
             String instrucao = instrucoes.get(i);
             if(instrucao.matches("add AX AX")){
-                updateMemoria(0x03C0,i );
-                int resultado = getRegistrador("AX") *2;
+                System.out.println("posicao = "+getRegistrador("CS"));
+                updateMemoria(0x03C0,posicao );
+                
                 
             }
             
             
             else if(instrucao.matches("add AX DX")){
-                updateMemoria(0x03C2, i);
+                updateMemoria(0x03C2, posicao);
                 
             }else if(instrucao.matches("add AX.*")){
                 updateMemoria(0x05, i++);
                 String opd = instrucao.split("AX")[1];
                 opd = opd.replaceAll("\\s+","");
+                
                 //int valor_opd = tabela_get_operando(opdRegex);
                 //updateMemoria(valor_opd,i);
             /*    
@@ -257,7 +261,7 @@ public class Emulador2 {
             */
             }// DELETAR
             
-        updateRegistrador(instrucoes.size(),6);  
+        //updateRegistrador(instrucoes.size(),"DS");    CASO SETAR DINAMICAMENTE OS SEGMENTOS   PILHA-INSTRUCOES-DADOS
             
             
             
@@ -315,8 +319,8 @@ public class Emulador2 {
                 op_valor_str = op_valor_str.replaceAll("\\s+","");
                 int op_valor = Integer.parseInt(op_valor_str);
                 
-                System.out.println("getRegistrador(\"DS\")" + getRegistrador("DS") +"   i = "+ i  );
-                updateMemoria(op_valor,getRegistrador("DS") + i+1);
+                
+                updateMemoria(op_valor,i);
                 
                 tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") );  
             } 
@@ -329,7 +333,7 @@ public class Emulador2 {
                 int op_valor = Integer.parseInt(op_valor_str);
                 
                 
-                updateMemoria(op_valor,getRegistrador("DS") +i+1);
+                updateMemoria(op_valor,i);
                 
                 tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") ); 
             }
