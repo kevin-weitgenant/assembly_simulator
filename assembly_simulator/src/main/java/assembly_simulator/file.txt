@@ -1,12 +1,10 @@
 add AX,op1
-add AX AX
+add AX,AX
 op1 EQU 12
 op4 DW 8
 op3 DW 10
 add AX,9
 add AX,AX
 add valorA
-load op1
-stop
 op2 EQU 8
 hlt

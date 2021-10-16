@@ -168,102 +168,176 @@ public class Emulador2 {
                 
                 updateMemoria(calculateOpd(opd),posicao);
 
-                
-                //int valor_opd = tabela_get_operando(opdRegex);
-                //updateMemoria(valor_opd,i);
-            /*    
+                    
             }else if(instrucao.matches("div SI")){
-                updateMemoria(0xf7f6, i);
+                updateMemoria(0xf7f6, posicao);
             }else if(instrucao.matches("div AX")){
-                updateMemoria(0xf7c0, i);
+                updateMemoria(0xf7c0, posicao);
             }else if(instrucao.matches("sub AX AX")){
-                updateMemoria(0x2bc0, i);
+                updateMemoria(0x2bc0, posicao);
             }else if(instrucao.matches("sub AX DX")){
-                updateMemoria(0x2bc2, i);
-            }else if(instrucao.matches("sub AX "+opdRegex)){
-                updateMemoria(0x25, i++);
-                updateMemoria(calculateOpd(params[1]), i);
-            }else if(instrucao.matches("mul SI")){
-                updateMemoria(0xf7f6, i);
-            }else if(instrucao.matches("mul AX")){
-                updateMemoria(0xf7f0, i);
-            }else if(instrucao.matches("cmp AX DX")){
-                updateMemoria(0x3BC2, i);
-            }else if(instrucao.matches("cmp AX "+opdRegex)){
-                updateMemoria(0x3d, i++);
-                updateMemoria(calculateOpd(params[1]), i);
-            }else if(instrucao.matches("and AX DX")){
-                updateMemoria(0xf7C2, i);
-            }else if(instrucao.matches("and AX "+opdRegex)){
-                updateMemoria(0x25, i++);
-                updateMemoria(calculateOpd(params[1]), i);
-            }else if(instrucao.matches("not AX")){
-                updateMemoria(0xF8C0, i);
-            }else if(instrucao.matches("or AX AX")){
-                updateMemoria(0x0BC0, i);
-            }else if(instrucao.matches("or AX DX")){
-                updateMemoria(0x0BC0, i);
-            }else if(instrucao.matches("or AX "+opdRegex)){
-                updateMemoria(0x0D, i++);
-                updateMemoria(calculateOpd(params[1]), i);
-            }else if(instrucao.matches("xor AX AX")){
-                updateMemoria(0x33C0, i);
-            }else if(instrucao.matches("xor AX DX")){
-                updateMemoria(0x33C2, i);
-            }else if(instrucao.matches("xor AX "+opdRegex)){
-                updateMemoria(0x35, i++);
-                updateMemoria(calculateOpd(params[1]), i);
-            }else if(instrucao.matches("jmp "+opdRegex)){
-                updateMemoria(0xEB, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao.matches("jz "+opdRegex)){
-                updateMemoria(0x74, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao.matches("jnz "+opdRegex)){
-                updateMemoria(0x75, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao.matches("jp "+opdRegex)){
-                updateMemoria(0x7A, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao.matches("call "+opdRegex)){
-                updateMemoria(0xE8, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao.matches("ret")){
-                updateMemoria(0xEF, i);
-            }else if(instrucao.matches("hlt")){
-                updateMemoria(0xEE, i);
-            }else if(instrucao.matches("pop AX")){
-                updateMemoria(0x58C0, i);
-            }else if(instrucao.matches("pop DX")){
-                updateMemoria(0x58C2, i);
-            }else if(instrucao.matches("pop "+opdRegex)){
-                updateMemoria(0x58, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao.matches("popf")){
-                updateMemoria(0x9C, i);
-            }else if(instrucao.matches("push AX")){
-                updateMemoria(0x50C0, i);
-            }else if(instrucao.matches("push DX")){
-                updateMemoria(0x50C2, i);
-            }else if(instrucao.matches("pushf")){
-                updateMemoria(0x9C, i);
-            }else if(instrucao.matches("store AX")){
-                updateMemoria(0x07C0, i);
-            }else if(instrucao.matches("store DX")){
-                updateMemoria(0x07C2, i);
-            }else if(instrucao.matches("read "+opdRegex)){
-                updateMemoria(0x12, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao.matches("write "+opdRegex)){
-                updateMemoria(0x08, i++);
-                updateMemoria(calculateOpd(params[0]), i);
-            }else if(instrucao ==""){
+                updateMemoria(0x2bc2, posicao);
+            
+            }else if(instrucao.matches("sub AX,")){
+                updateMemoria(0x25, posicao++);
+                String opd = instrucao.split("AX,")[1];
+                opd = opd.replaceAll("\\s+","");
 
-            }else{
-                System.out.println("Instrução nao reconhecida!");
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            
+            }else if(instrucao.matches("mul SI")){
+                updateMemoria(0xf7f6, posicao);
+            }else if(instrucao.matches("mul AX")){
+                updateMemoria(0xf7f0, posicao);
+            }else if(instrucao.matches("cmp AX DX")){
+                updateMemoria(0x3BC2, posicao);
+            
+            }else if(instrucao.matches("cmp AX ")){
+                updateMemoria(0x3d, posicao++);
+                String opd = instrucao.split("AX")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("and AX DX")){
+                updateMemoria(0xf7C2, posicao);
+            
+            
+            }else if(instrucao.matches("and AX ")){
+                updateMemoria(0x25, posicao++);
+                String opd = instrucao.split("AX,")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("not AX")){
+                updateMemoria(0xF8C0, posicao);
+            }else if(instrucao.matches("or AX,AX")){
+                updateMemoria(0x0BC0, posicao);
+            }else if(instrucao.matches("or AX,DX")){
+                updateMemoria(0x0BC0, posicao);
+            
+            
+            }else if(instrucao.matches("or AX,")){
+                updateMemoria(0x0D, posicao++);
+                 String opd = instrucao.split("AX,")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("xor AX,AX")){
+                updateMemoria(0x33C0, posicao);
+            }else if(instrucao.matches("xor AX,DX")){
+                updateMemoria(0x33C2, posicao);
+            
+            }else if(instrucao.matches("xor AX ")){
+                updateMemoria(0x35, posicao++);
+                String opd = instrucao.split("AX,")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            
+            }else if(instrucao.matches("jmp ")){
+                updateMemoria(0xEB, posicao++);
+                String opd = instrucao.split("jmp")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("jz ")){
+                updateMemoria(0x74, posicao++);
+                String opd = instrucao.split("jz")[1];
+                opd = opd.replaceAll("\\s+","");
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("jnz ")){
+                updateMemoria(0x75, posicao++);
+                String opd = instrucao.split("jnz")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("jp ")){
+                updateMemoria(0x7A, posicao++);
+                String opd = instrucao.split("jp")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("call ")){
+                updateMemoria(0xE8, posicao++);
+                String opd = instrucao.split("call")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            
+            }else if(instrucao.matches("ret")){
+                updateMemoria(0xEF, posicao);
+            
+            }else if(instrucao.matches("hlt")){
+                updateMemoria(0xEE, posicao);
+            }else if(instrucao.matches("pop AX")){
+                updateMemoria(0x58C0, posicao);
+            }else if(instrucao.matches("pop DX")){
+                updateMemoria(0x58C2, posicao);
+            
+            }else if(instrucao.matches("pop ")){
+                updateMemoria(0x58, posicao++);
+                String opd = instrucao.split("pop")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            }else if(instrucao.matches("popf")){
+                updateMemoria(0x9C, posicao);
+            }else if(instrucao.matches("push AX")){
+                updateMemoria(0x50C0, posicao);
+            }else if(instrucao.matches("push DX")){
+                updateMemoria(0x50C2, posicao);
+            }else if(instrucao.matches("pushf")){
+                updateMemoria(0x9C, posicao);
+            }else if(instrucao.matches("store AX")){
+                updateMemoria(0x07C0, posicao);
+            }else if(instrucao.matches("store DX")){
+                updateMemoria(0x07C2, posicao);
+            
+            
+            }else if(instrucao.matches("read ")){
+                updateMemoria(0x12, posicao++);
+                String opd = instrucao.split("read")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            
+            }else if(instrucao.matches("write ")){
+                updateMemoria(0x08, posicao++);
+                String opd = instrucao.split("AX,")[1];
+                opd = opd.replaceAll("\\s+","");
+
+                
+                updateMemoria(calculateOpd(opd),posicao);
+            }else if(instrucao ==""||instrucao.contains("EQU") || instrucao.contains("DW")){
+
+            }
+
+
+            else{
+                System.out.println("Instrução nao reconhecida = "+ instrucao);
             }      
-            */
-            }// DELETAR
+ 
             
         //updateRegistrador(instrucoes.size(),"DS");    CASO SETAR DINAMICAMENTE OS SEGMENTOS   PILHA-INSTRUCOES-DADOS
             
