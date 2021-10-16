@@ -57,7 +57,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
     
-    static public List<TabelaOperandos> tabela = new ArrayList<TabelaOperandos>();
+    
    
     /**
      * Creates new form TelaPrincipal
@@ -634,15 +634,16 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
             
             Emulador2.InitRegistradores();
-            Emulador2.updateRegistrador(1, "AX");
+            Emulador2.tabela_operandos();
+            
             Emulador2.load_instrucoes();
-            Emulador2.tabela_operandos(tabela);
+            
             
 
             
-            Emulador2.tabela_operandos(tabela);
+            
 
-            Emulador2.InitRegistradores();
+            
             
 
             

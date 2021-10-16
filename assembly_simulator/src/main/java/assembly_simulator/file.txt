@@ -1,16 +1,11 @@
+add AX AX
 op1 EQU 12
-op3 DW 8
+op4 DW 8
 op3 DW 10
-add AX 8
+add AX,8
+add AX,AX
 add valorA
-mult valoB valorA
-load valorC
-store ValorB
+load op1
 stop
 op2 EQU 8
-space
-valorA 15
-valorB 20
-valorC 50
-add AX AX
 hlt

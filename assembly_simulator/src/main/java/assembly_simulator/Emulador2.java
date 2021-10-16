@@ -39,13 +39,13 @@ public class Emulador2 {
     public static int linha_atual;
     public static int IP = 0;
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
-    static TabelaOperandos[] tabela;
+    
     
     protected static final int DS = 11;
     protected static final int CS = 2012;
     protected static final int SP = 2;
     
-    public static Map<String, List<String>> tabela_opds = new HashMap<String, List<String>>();
+    public static Map<String, List<Integer>> tabela_opds = new HashMap<String, List<Integer>>();
     
     
     public static void  updateRegistrador(int valor,int posicao_reg){
@@ -142,11 +142,11 @@ public class Emulador2 {
         
         
         for (int i = 0; i< instrucoes.size(); i++){
-            int posicao = getRegistrador("CS")+i+1;
+            int posicao = getRegistrador("CS")+i;
             
             String instrucao = instrucoes.get(i);
             if(instrucao.matches("add AX AX")){
-                System.out.println("posicao = "+getRegistrador("CS"));
+               
                 updateMemoria(0x03C0,posicao );
                    
             }
@@ -291,14 +291,19 @@ public class Emulador2 {
         
         
         else if(opd.matches("[A-Za-z][A-Za-z0-9]*")){
-           // getOpdValue(opd);
-           return 0;
+            if(tabela_opds.keySet().contains(opd)){
+                return tabela_opds.get(opd).get(0);
+                
+            }
             
- 
+            else{
+                System.out.println("OPD NÃO ENCONTRADO NA TABELA!");
+                
+            }
+          
         }
         return -1;
-        
-           
+                
     }
     
     /*
@@ -341,9 +346,8 @@ public class Emulador2 {
     
     
     
-    public static void tabela_operandos(List<TabelaOperandos> tabela){
-        //NOME_OPERANDO DW VALOR
-        
+    public static void tabela_operandos(){
+
         
         for (int i = 0; i< instrucoes.size(); i++){    
             String instrucao = instrucoes.get(i);
@@ -359,8 +363,8 @@ public class Emulador2 {
                 int posicao = i+getRegistrador("DS");
                 
                 updateMemoria(op_valor,posicao);
-                
-                tabela.add(new TabelaOperandos(op_nome,""+i,"CONST") );  
+                tabela_opds.put(op_nome, Arrays.asList(DS+i,0));
+                     
             } 
             
             else if (instrucao.contains("DW")){
@@ -374,7 +378,9 @@ public class Emulador2 {
                 
                 updateMemoria(op_valor,posicao);
                 
-                tabela.add(new TabelaOperandos(op_nome,""+i,"VAR") ); 
+                tabela_opds.put(op_nome, Arrays.asList(DS+i,1));
+                
+                
             }
         
         } 
@@ -386,12 +392,12 @@ public class Emulador2 {
     
     
     
-    public static void print_tabela(List<TabelaOperandos> tabela){    
+    public static void print_tabela(){    
         
-    for (int i = 0; i<tabela.size();i++){
-        System.out.println(tabela.get(i).getName()+"-" + tabela.get(i).getPosicaoNaMemoria()+ "-" + tabela.get(i).getType() +" -" +i);
+    for (String key : tabela_opds.keySet()){
+        System.out.println("OPERADOR " +key+ tabela_opds.get(key) );
+
         
-            
     }
     
     

@@ -3,8 +3,6 @@ Emulador/Emulador.java
  Emulador.Emulador$paramTypes
 assembly_simulator/Emulador2.java
  assembly_simulator.Emulador2
-assembly_simulator/TabelaOperandos.java
- assembly_simulator.TabelaOperandos
 Emulador/Util.java
  Emulador.Util
 Emulador/VarTable.java
