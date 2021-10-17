@@ -547,30 +547,25 @@ public class TelaPrincipal extends javax.swing.JFrame{
       
       linha = Emulador2.instrucoes.get(numero_linha);
       
-      pos_0 = CodigoFonteField.getText().indexOf(linha);
+      
+      pos_0 = CodigoFonteField.getText().indexOf(linha); // errado, buga em instruções iguais
+      //                              Tem que ser isso>> pos_0 = CodigoFonteField.getText().indexOf(linha, indice); e nao sei oq por em indice    
+      
       pos_1 = pos_0 + linha.length();
 
       highlighter.addHighlight(pos_0, pos_1, painter );  
-      
-      
-        
+            
     }
     
  
-    
-
-    
-    
-    
+   
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         highlighter.removeAllHighlights();
         
         Emulador2.updateRegistrador(Emulador2.getRegistrador(4)+1,4);  // INCREMENTAR IP
         
-        
- 
-
+  
         //-----
         
         Emulador2.run_instrucao(Emulador2.instrucoes.get(Emulador2.linha_atual));
@@ -642,7 +637,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             
             Emulador2.load_instrucoes();
             
-            
+            Emulador2.getbitSR(15);
 
             
             

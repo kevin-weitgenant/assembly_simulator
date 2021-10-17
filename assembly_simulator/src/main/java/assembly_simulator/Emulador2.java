@@ -164,7 +164,7 @@ public class Emulador2 {
                 updateMemoria(0x05, controle_mem++);
                 String opd = instrucao.split("AX,")[1];
                 opd = opd.trim();
-                System.out.println("entrou e " + opd);
+
                 updateMemoria(calculateOpd(opd),controle_mem++);
                 
                     
@@ -403,7 +403,7 @@ public class Emulador2 {
         else if(opd.matches("[A-Za-z][A-Za-z0-9]*")){
 
             if(tabela_opds.keySet().contains(opd)){
-                System.out.println("retornando " + tabela_opds.get(opd).get(0) );
+                
                 return tabela_opds.get(opd).get(0);
                 
             }
@@ -440,10 +440,7 @@ public class Emulador2 {
         
         // acrescentar
         
-        
-        
-        
-      
+
         }
     }
     
@@ -508,7 +505,25 @@ public class Emulador2 {
         
     }
     
-    
     }
+    
+    
+    public static int getbitSR(int flag){
+        
+    String str_SR = converter.decToBin(getRegistrador("DS")+"");
+    int valor_bin = Integer.parseInt(str_SR);
+    
+    
+    str_SR = String.format("%016d", valor_bin);
+    
+    System.out.println(Integer.parseInt(str_SR.charAt(flag) + ""));
+    
+    
+    return(Integer.parseInt(str_SR.charAt(flag) + ""));
+        
+        
+    }
+    
+    
     
 }
