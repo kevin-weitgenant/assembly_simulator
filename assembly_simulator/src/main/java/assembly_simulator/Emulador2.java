@@ -436,12 +436,7 @@ public class Emulador2 {
         
         for (int i = 0; i< instrucoes.size(); i++){
             
-            if(instrucao.contains("add AX,AX")){    //ta errado tem quer ser pelos os códigos das instruções, burrei
-                
-                int resultado = getRegistrador("AX") *2;
-                updateRegistrador(resultado,"AX");
-                break;
-            }
+            
         
         // acrescentar
         
