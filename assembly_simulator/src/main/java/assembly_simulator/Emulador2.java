@@ -45,7 +45,7 @@ public class Emulador2 {
     protected static final int CS = 2012;
     protected static final int SP = 2;
     
-    protected static int apontador_memLixo = DS;
+    protected static int apontador_memLixo;
     
     public static Map<String, List<Integer>> tabela_opds = new HashMap<String, List<Integer>>();
     
@@ -83,7 +83,7 @@ public class Emulador2 {
     public static int getRegistrador(int posicao_reg){   
         String linha_reg = listRegisterModel.getElementAt(posicao_reg);
         linha_reg = linha_reg.split("0x")[1];
-        linha_reg = linha_reg.replaceAll("\\s+","");   
+        linha_reg = linha_reg.trim();   
         return Integer.parseInt(linha_reg,16);
         
         
@@ -104,7 +104,7 @@ public class Emulador2 {
         
         String linha_reg = listRegisterModel.getElementAt(posicao_reg);
         linha_reg = linha_reg.split("0x")[1];
-        linha_reg = linha_reg.replaceAll("\\s+","");   
+        linha_reg = linha_reg.trim();   
         return Integer.parseInt(linha_reg,16);
         
         
@@ -128,7 +128,7 @@ public class Emulador2 {
     public static int getMemoria(int posicao_palavra){
         String linha_mem = listMemoryModel.getElementAt(posicao_palavra);
         linha_mem = linha_mem.split("0x")[1];
-        linha_mem = linha_mem.replaceAll("\\s+","");   
+        linha_mem = linha_mem.trim();   
         return Integer.parseInt(linha_mem,16);
         
         //RETORNA EM DECIMAL
@@ -144,193 +144,218 @@ public class Emulador2 {
     
 
     public static void load_instrucoes(){
-        int controle_mem = 0;
+        int controle_mem = CS;
         
         for (int i = 0; i< instrucoes.size(); i++){
-            int posicao = getRegistrador("CS")+controle_mem;
+            
             
             String instrucao = instrucoes.get(i);
-            if(instrucao.matches("add AX,AX")){
+            if(instrucao.contains("add AX,AX")){
                
-                updateMemoria(0x03C0,posicao );
-                controle_mem++;
-                   
+                updateMemoria(0x03C0,controle_mem++ );      
             }
             
             
-            else if(instrucao.matches("add AX,DX")){
-                updateMemoria(0x03C2, posicao);
-                controle_mem++;
+            else if(instrucao.contains("add AX,DX")){
+                updateMemoria(0x03C2, controle_mem++);
+ 
                 
             }else if(instrucao.matches("add AX,.*")){
-                updateMemoria(0x05, posicao++);
+                updateMemoria(0x05, controle_mem++);
                 String opd = instrucao.split("AX,")[1];
-                opd = opd.replaceAll("\\s+","");
-                updateMemoria(calculateOpd(opd),posicao);
-                controle_mem+=2;
+                opd = opd.trim();
+                System.out.println("entrou e " + opd);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
                     
-            }else if(instrucao.matches("div SI")){
-                updateMemoria(0xf7f6, posicao);
-            }else if(instrucao.matches("div AX")){
-                updateMemoria(0xf7c0, posicao);
-            }else if(instrucao.matches("sub AX AX")){
-                updateMemoria(0x2bc0, posicao);
-            }else if(instrucao.matches("sub AX DX")){
-                updateMemoria(0x2bc2, posicao);
+            }else if(instrucao.contains("div SI")){
+                updateMemoria(0xf7f6, controle_mem++);
+                
+            }else if(instrucao.contains("div AX")){
+                updateMemoria(0xf7c0, controle_mem++);
+                
+            }else if(instrucao.contains("sub AX AX")){
+                updateMemoria(0x2bc0, controle_mem++);
+                
+            }else if(instrucao.contains("sub AX DX")){
+                updateMemoria(0x2bc2, controle_mem++);
+                
+                
             
-            }else if(instrucao.matches("sub AX,")){
-                updateMemoria(0x25, posicao++);
+            }else if(instrucao.contains("sub AX,")){
+                updateMemoria(0x25, controle_mem++);
                 String opd = instrucao.split("AX,")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
             
+            }else if(instrucao.contains("mul SI")){
+                updateMemoria(0xf7f6, controle_mem++);
+                
+            }else if(instrucao.contains("mul AX")){
+                updateMemoria(0xf7f0, controle_mem++);
+                
+            }else if(instrucao.contains("cmp AX DX")){
+                updateMemoria(0x3BC2, controle_mem++);
+                
             
-            }else if(instrucao.matches("mul SI")){
-                updateMemoria(0xf7f6, posicao);
-            }else if(instrucao.matches("mul AX")){
-                updateMemoria(0xf7f0, posicao);
-            }else if(instrucao.matches("cmp AX DX")){
-                updateMemoria(0x3BC2, posicao);
-            
-            }else if(instrucao.matches("cmp AX ")){
-                updateMemoria(0x3d, posicao++);
+            }else if(instrucao.contains("cmp AX ")){
+                updateMemoria(0x3d, controle_mem++);
                 String opd = instrucao.split("AX")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
+                updateMemoria(calculateOpd(opd),controle_mem++);
 
-                
-                updateMemoria(calculateOpd(opd),posicao);
-            
-            }else if(instrucao.matches("and AX DX")){
-                updateMemoria(0xf7C2, posicao);
-            
-            
-            }else if(instrucao.matches("and AX ")){
-                updateMemoria(0x25, posicao++);
+            }else if(instrucao.contains("and AX DX")){
+                updateMemoria(0xf7C2, controle_mem++);
+  
+            }else if(instrucao.contains("and AX ")){
+                updateMemoria(0x25, controle_mem++);
                 String opd = instrucao.split("AX,")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
             
-            }else if(instrucao.matches("not AX")){
-                updateMemoria(0xF8C0, posicao);
-            }else if(instrucao.matches("or AX,AX")){
-                updateMemoria(0x0BC0, posicao);
-            }else if(instrucao.matches("or AX,DX")){
-                updateMemoria(0x0BC0, posicao);
-            
-            
-            }else if(instrucao.matches("or AX,")){
-                updateMemoria(0x0D, posicao++);
+            }else if(instrucao.contains("not AX")){
+                updateMemoria(0xF8C0, controle_mem++);
+                
+            }else if(instrucao.contains("or AX,AX")){
+                updateMemoria(0x0BC0, controle_mem++);
+                
+            }else if(instrucao.contains("or AX,DX")){
+                updateMemoria(0x0BC0, controle_mem++);
+                
+ 
+            }else if(instrucao.contains("or AX,")){
+                updateMemoria(0x0D, controle_mem++);
                  String opd = instrucao.split("AX,")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
-                
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+
             
-            }else if(instrucao.matches("xor AX,AX")){
-                updateMemoria(0x33C0, posicao);
-            }else if(instrucao.matches("xor AX,DX")){
-                updateMemoria(0x33C2, posicao);
+            }else if(instrucao.contains("xor AX,AX")){
+                updateMemoria(0x33C0, controle_mem++);
+
+            }else if(instrucao.contains("xor AX,DX")){
+                updateMemoria(0x33C2, controle_mem++);
+ 
             
-            }else if(instrucao.matches("xor AX ")){
-                updateMemoria(0x35, posicao++);
+            }else if(instrucao.contains("xor AX ")){
+                updateMemoria(0x35, controle_mem++);
                 String opd = instrucao.split("AX,")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+
             
-            
-            }else if(instrucao.matches("jmp ")){
-                updateMemoria(0xEB, posicao++);
+            }else if(instrucao.contains("jmp ")){
+                updateMemoria(0xEB, controle_mem++);
                 String opd = instrucao.split("jmp")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
             
-            }else if(instrucao.matches("jz ")){
-                updateMemoria(0x74, posicao++);
+            }else if(instrucao.contains("jz ")){
+                updateMemoria(0x74, controle_mem++);
                 String opd = instrucao.split("jz")[1];
-                opd = opd.replaceAll("\\s+","");
-                updateMemoria(calculateOpd(opd),posicao);
+                opd = opd.trim();
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
             
-            }else if(instrucao.matches("jnz ")){
-                updateMemoria(0x75, posicao++);
+            }else if(instrucao.contains("jnz ")){
+                updateMemoria(0x75, controle_mem++);
                 String opd = instrucao.split("jnz")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+ 
             
-            }else if(instrucao.matches("jp ")){
-                updateMemoria(0x7A, posicao++);
+            }else if(instrucao.contains("jp ")){
+                updateMemoria(0x7A, controle_mem++);
                 String opd = instrucao.split("jp")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
             
-            }else if(instrucao.matches("call ")){
-                updateMemoria(0xE8, posicao++);
+            }else if(instrucao.contains("call ")){
+                updateMemoria(0xE8, controle_mem++);
                 String opd = instrucao.split("call")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
             
             
-            }else if(instrucao.matches("ret")){
-                updateMemoria(0xEF, posicao);
+            }else if(instrucao.contains("ret")){
+                updateMemoria(0xEF, controle_mem++);
+                
             
-            }else if(instrucao.matches("hlt")){
-                updateMemoria(0xEE, posicao);
-            }else if(instrucao.matches("pop AX")){
-                updateMemoria(0x58C0, posicao);
-            }else if(instrucao.matches("pop DX")){
-                updateMemoria(0x58C2, posicao);
+            }else if(instrucao.contains("hlt")){
+                updateMemoria(0xEE, controle_mem++);
+                
+            }else if(instrucao.contains("pop AX")){
+                updateMemoria(0x58C0, controle_mem++);
+                
+            }else if(instrucao.contains("pop DX")){
+                updateMemoria(0x58C2, controle_mem++);
+                
             
-            }else if(instrucao.matches("pop ")){
-                updateMemoria(0x58, posicao++);
+            }else if(instrucao.contains("pop ")){
+                updateMemoria(0x58, controle_mem++);
                 String opd = instrucao.split("pop")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
-            }else if(instrucao.matches("popf")){
-                updateMemoria(0x9C, posicao);
-            }else if(instrucao.matches("push AX")){
-                updateMemoria(0x50C0, posicao);
-            }else if(instrucao.matches("push DX")){
-                updateMemoria(0x50C2, posicao);
-            }else if(instrucao.matches("pushf")){
-                updateMemoria(0x9C, posicao);
-            }else if(instrucao.matches("store AX")){
-                updateMemoria(0x07C0, posicao);
-            }else if(instrucao.matches("store DX")){
-                updateMemoria(0x07C2, posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
+            }else if(instrucao.contains("popf")){
+                updateMemoria(0x9C, controle_mem++);
+                
+            }else if(instrucao.contains("push AX")){
+                updateMemoria(0x50C0, controle_mem++);
+                
+            }else if(instrucao.contains("push DX")){
+                updateMemoria(0x50C2, controle_mem++);
+                
+            }else if(instrucao.contains("pushf")){
+                updateMemoria(0x9C, controle_mem++);
+                
+            }else if(instrucao.contains("store AX")){
+                updateMemoria(0x07C0, controle_mem++);
+                
+            }else if(instrucao.contains("store DX")){
+                updateMemoria(0x07C2, controle_mem++);
+                
             
-            
-            }else if(instrucao.matches("read ")){
-                updateMemoria(0x12, posicao++);
+            }else if(instrucao.contains("read ")){
+                updateMemoria(0x12, controle_mem++);
                 String opd = instrucao.split("read")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                
             
-            }else if(instrucao.matches("write ")){
-                updateMemoria(0x08, posicao++);
+            }else if(instrucao.contains("write ")){
+                updateMemoria(0x08, controle_mem++);
                 String opd = instrucao.split("AX,")[1];
-                opd = opd.replaceAll("\\s+","");
+                opd = opd.trim();
 
                 
-                updateMemoria(calculateOpd(opd),posicao);
+                updateMemoria(calculateOpd(opd),controle_mem++);
+                controle_mem++;
             }else if(instrucao ==""||instrucao.contains("EQU") || instrucao.contains("DW")){
-                posicao--;
 
             }
 
@@ -378,7 +403,7 @@ public class Emulador2 {
         else if(opd.matches("[A-Za-z][A-Za-z0-9]*")){
 
             if(tabela_opds.keySet().contains(opd)){
-                
+                System.out.println("retornando " + tabela_opds.get(opd).get(0) );
                 return tabela_opds.get(opd).get(0);
                 
             }
@@ -411,7 +436,7 @@ public class Emulador2 {
         
         for (int i = 0; i< instrucoes.size(); i++){
             
-            if(instrucao.matches("add AX,AX")){    //ta errado tem quer ser pelos os códigos das instruções, burrei
+            if(instrucao.contains("add AX,AX")){    //ta errado tem quer ser pelos os códigos das instruções, burrei
                 
                 int resultado = getRegistrador("AX") *2;
                 updateRegistrador(resultado,"AX");
@@ -444,14 +469,14 @@ public class Emulador2 {
                 String op_nome = instrucao.split("EQU")[0].trim();
                 
                 String op_valor_str = instrucao.split("EQU")[1];
-                op_valor_str = op_valor_str.replaceAll("\\s+","");
+                op_valor_str = op_valor_str.trim();
                 int op_valor = Integer.parseInt(op_valor_str);
                 
                 int posicao = controle+getRegistrador("DS");
                 
                 updateMemoria(op_valor,posicao);
                 tabela_opds.put(op_nome, Arrays.asList(posicao,0));
-                apontador_memLixo++;
+                
                 controle++;
                      
             } 
@@ -460,7 +485,7 @@ public class Emulador2 {
                 String op_nome = instrucao.split("DW")[0];
                 
                 String op_valor_str = instrucao.split("DW")[1];
-                op_valor_str = op_valor_str.replaceAll("\\s+","");
+                op_valor_str = op_valor_str.trim();
                 int op_valor = Integer.parseInt(op_valor_str);
                 
                 int posicao = controle+getRegistrador("DS");
@@ -468,14 +493,15 @@ public class Emulador2 {
                 updateMemoria(op_valor,posicao);
                 
                 tabela_opds.put(op_nome, Arrays.asList(posicao,1));
-                apontador_memLixo++;
+                
                 controle++;
                 
                 
             }
         
         } 
-    
+        apontador_memLixo = controle + DS;
+        updateMemoria(0xFFFF,apontador_memLixo);
     }
     
     
