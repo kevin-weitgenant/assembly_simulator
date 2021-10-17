@@ -121,7 +121,7 @@ public class Emulador2 {
         updateRegistrador(DS,"DS");
         updateRegistrador(CS,"CS");
         updateRegistrador(SP,"SP");
-
+        updateRegistrador(CS,"IP");
     }
     
 
@@ -137,7 +137,7 @@ public class Emulador2 {
     
     public static void updateMemoria( int valor, int posicao_palavra){
         String new_content = String.format("0x%04X",valor);
-        new_content = String.format("%04d", posicao_palavra) + ": " + new_content ;
+        new_content = String.format("0x%04X", posicao_palavra) + ": " + new_content ;
         listMemoryModel.setElementAt(""+new_content, posicao_palavra);        
         
     }
@@ -525,5 +525,23 @@ public class Emulador2 {
     }
     
     
+    public static int setbitSR(int valor,int flag){
+        
+    String str_SR = converter.decToBin(getRegistrador("DS")+"");
+    int valor_bin = Integer.parseInt(str_SR);
     
+    
+    str_SR = String.format("%016d", valor_bin);
+    
+    System.out.println(Integer.parseInt(str_SR.charAt(flag) + ""));
+    
+    
+    return(Integer.parseInt(str_SR.charAt(flag) + ""));
+        
+        
+    }
+       
 }
+
+
+

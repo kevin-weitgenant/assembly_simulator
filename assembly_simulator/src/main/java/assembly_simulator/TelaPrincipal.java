@@ -501,7 +501,12 @@ public class TelaPrincipal extends javax.swing.JFrame{
         String[] memo = new String[4096];
         
         for(int i = 0; i<4096; i++){
-            memo[i] = String.format("%04d", i) + ":" + " 0x0000";
+            
+            String posicao = String.format("0x%04X",i);
+            
+            memo[i] = posicao +":" + " 0x0000";
+            
+            
             listMemoryModel.addElement(memo[i]);
             //System.out.printf("Memoria: \n" + ListModel.get(i));
         }
@@ -639,14 +644,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             
             Emulador2.getbitSR(15);
 
-            
-            
-
-            
-            
-
-            
-            
+         
             buffRead.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -658,14 +656,14 @@ public class TelaPrincipal extends javax.swing.JFrame{
     private void localizaMemoryFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_localizaMemoryFieldActionPerformed
         // TODO add your handling code here:
         String str = localizaMemoryField.getText();
-        memoria.ensureIndexIsVisible(Integer.parseInt(str));
+        memoria.ensureIndexIsVisible(Integer.parseInt(converter.hexToDec(str)));
     }//GEN-LAST:event_localizaMemoryFieldActionPerformed
 
     private void localizaMemoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_localizaMemoryButtonActionPerformed
         // TODO add your handling code here:
         String str = localizaMemoryField.getText();
         
-        memoria.ensureIndexIsVisible(Integer.parseInt(str));
+        memoria.ensureIndexIsVisible(Integer.parseInt(converter.hexToDec(str)));
     }//GEN-LAST:event_localizaMemoryButtonActionPerformed
 
     private void nextMemoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextMemoryButtonActionPerformed
