@@ -127,11 +127,13 @@ public class Emulador2 {
 
     public static int getMemoria(int posicao_palavra){
         String linha_mem = listMemoryModel.getElementAt(posicao_palavra);
+        linha_mem = linha_mem.split(":")[1];
         linha_mem = linha_mem.split("0x")[1];
-        linha_mem = linha_mem.trim();   
+        linha_mem = linha_mem.trim(); 
+        
+        
         return Integer.parseInt(linha_mem,16);
         
-        //RETORNA EM DECIMAL
         
     }
     
@@ -418,33 +420,178 @@ public class Emulador2 {
                 
     }
     
-    /*
-    public static int getOpdValue(String opd){
-        for 
-        
-        
-        
-    }
-    */
+
+      
     
-    
-    
-    
-    public static void run_instrucao(String instrucao){
-        
+    public static void run_instrucao(){
+            
+                
+                int instrucao = getMemoria(getRegistrador("IP"));
+                System.out.println("getRegistradorIP = "+getRegistrador("IP"));
+                System.out.println("getMemoria do Registrador IP = "+getMemoria(getRegistrador("IP")));
+                
+                switch (instrucao){
+            case 0x03c0:// add ax
+                System.out.println("cheguei = ");
+                updateRegistrador(2*getRegistrador("AX"),"AX");
+            break;
+            case 0x03c2:// add dx
+                updateRegistrador(getRegistrador("AX")+getRegistrador("DX") ,"AX");
+            break;
+            /*
+            case 0x05: // add opd
+                opd = memory.getPalavra(CS+IP++);
+                AX += opd;
+            break;
+            case 0xf7f6:// div si
+                div = AX / SI;
+                AX = (short)(div & 256);
+                DX = (short)(div >>> 8);
+            break;
+            case 0xf7c0:// div ax
+                div = AX / AX;
+                AX = (short)(div & 256);
+                DX = (short)(div >>> 8);
+            break;
+            case 0x2bc0:// sub ax
+                AX -= AX;
+            break;
+            case 0x2bc2:// sub dx
+                AX -= DX;
+            break;
+            case 0x25:// sub opd
+                memory.getPalavra(CS+IP++);
+                AX -= opd;
+            break;
+            // case 0xf7f6:// mul si
+                //todo
+            // break;
+            case 0xf7f0:// mul AX
+                mul = AX * AX;
+                AX = (short)(mul & 256);
+                DX = (short)(mul >>> 8);
+            break;
+            case 0x3d:// cmp opd
+                opd = memory.getPalavra(CS+IP++);
+                setFlag("zf", AX == opd);
+            break;
+            case 0x3bc2://cmp DX
+                setFlag("zf", AX == DX);
+            break;
+            case 0x23c0:// and AX
+                setFlag("zf", AX == AX);
+            break;
+            case 0x23c2:// and DX
+                AX &= AX;
+            break;
+            // case 0x25:// and opd
+                //todo
+                // CS+IP++;
+            // break;
+            case 0xf8c0:// not ax
+                AX = (short)~AX;
+            break;
+            case 0x0bc0:// or ax
+                AX|=AX;
+            break;
+            case 0x0bc2:// or dx
+                AX|=DX;
+            break;
+            case 0x0d:// or opd
+                opd = memory.getPalavra(CS+IP++);
+                AX|=opd;
+            break;
+            case 0x33c0:// xor ax
+                AX|=AX;
+            break;
+            case 0x33c2:// xor dx
+                AX|=DX;
+            break;
+            case 0x35:// xor opd
+                opd = memory.getPalavra(CS+IP++);
+                AX^=opd;
+            break;
+            case 0xeb:// jmp
+                opd = memory.getPalavra(CS+IP++);
+                IP = opd;
+            break;
+            case 0x74:// jz
+                opd = memory.getPalavra(CS+IP++);
+                if(getFlag("zf")) IP = opd;
+            break;
+            case 0x75:// jnz
+                opd = memory.getPalavra(CS+IP++);
+                if(!getFlag("zf")) IP = opd;
+            break;
+            case 0x7a:// jp
+                opd = memory.getPalavra(CS+IP++);
+                if(!getFlag("SF")) IP = opd;
+            break;
+            case 0xe8:// call
+                opd = memory.getPalavra(CS+IP++);
+                memory.setPalavra(IP, SI++);
+                IP = opd;
+            break;
+            case 0xef:// ret
+                IP = memory.getPalavra(--SI);
+            break;
+            case 0x58c0:// pop ax
+                AX = memory.getPalavra(--SI);
+            break;
+            case 0x58c2:// pop dx
+                DX = memory.getPalavra(--SI);
+            break;
+            case 0x59:// pop opd
+                opd = memory.getPalavra(IP++);
+                memory.setPalavra(memory.getPalavra(--SI), DS+opd);
+            break;
+            case 0x9d:// popf
+                SR = memory.getPalavra(--SI);
+            break;
+            case 0x50c0:// push ax
+                memory.setPalavra(AX, DS+opd);
+            break;
+            case 0x50c2:// push dx
+                memory.setPalavra(DX, DS+opd);
+            break;
+            case 0x9c://pushf
+                memory.setPalavra(SR, SI++);
+            break;
+            case 0x07c0:// store ax
+                //todo
+            break;
+            case 0x07c2:// store dx
+                //todo
+            break;
+            case 0x12:// read opd
+                opd = memory.getPalavra(IP++);
+                outputStream = Util.convertIntegerToBinary(opd);
+                if(inputStream.size()>inputStreamIndex){
+                    memory.setPalavra(inputStream.get(inputStreamIndex++).shortValue(), opd);
+                }else{
+                    IP-=2;
+                }
+            break;
+            case 0x08:// write opd
+                opd = memory.getPalavra(CS+IP++);
+                outputStream = Util.convertIntegerToBinary(opd);
+            break;
+            case 0xEE: // hlt
+                
+            break;
+        }         */
+                 
+                }
+                
+                
             
         
-        for (int i = 0; i< instrucoes.size(); i++){
-            
-            
-        
-        // acrescentar
         
 
-        }
+        
+           
     }
     
-
     
     
     
@@ -601,7 +748,7 @@ public class Emulador2 {
     
     str_SR = String.format("%016d", valor_bin);
     
-    System.out.println(Integer.parseInt(str_SR.charAt(flag) + ""));
+    //System.out.println(Integer.parseInt(str_SR.charAt(flag) + ""));
     
     
     return(Integer.parseInt(str_SR.charAt(flag) + ""));

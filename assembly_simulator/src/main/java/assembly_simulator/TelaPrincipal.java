@@ -568,12 +568,12 @@ public class TelaPrincipal extends javax.swing.JFrame{
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         highlighter.removeAllHighlights();
         
-        Emulador2.updateRegistrador(Emulador2.getRegistrador(4)+1,4);  // INCREMENTAR IP
+        
         
   
         //-----
         
-        Emulador2.run_instrucao(Emulador2.instrucoes.get(Emulador2.linha_atual));
+        //Emulador2.run_instrucao(Emulador2.instrucoes.get(Emulador2.linha_atual));
         Emulador2.linha_atual++;
         
         if(Emulador2.linha_atual >= Emulador2.instrucoes.size())Emulador2.linha_atual = 0;
@@ -587,7 +587,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
             
         }
 
-        
+        Emulador2.run_instrucao();
+        Emulador2.updateRegistrador(Emulador2.getRegistrador("IP")+1,"IP");  // INCREMENTAR IP
         
     }//GEN-LAST:event_nextStepActionPerformed
 
@@ -634,16 +635,16 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
             
             Emulador2.InitRegistradores();
-            Emulador2.updateRegistrador(1,"AX");
+
             
             
             Emulador2.tabela_operandos();
             Emulador2.print_tabela();
             
             Emulador2.load_instrucoes();
-            
-            System.out.println("AX LS = " +Emulador2.getbyte("AX", "LS") );
-            Emulador2.setbyte("DX", "MS", 255);
+            Emulador2.updateRegistrador(1,"AX");
+            Emulador2.updateRegistrador(7,"DX");
+            System.out.println("teste" +Emulador2.getMemoria(15));
             
             
          

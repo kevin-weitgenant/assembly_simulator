@@ -1,6 +1,7 @@
+add AX,AX
+add AX,DX
 add AX,op1
 op1 EQU 12
-add AX,AX
 op4 DW 8
 op3 DW 10
 add AX,9
