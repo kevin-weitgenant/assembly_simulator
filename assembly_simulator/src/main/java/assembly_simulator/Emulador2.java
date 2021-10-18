@@ -525,19 +525,32 @@ public class Emulador2 {
     }
     
     
-    public static int setbitSR(int valor,int flag){
+    public static void setbitSR(char valor,int flag){
         
     String str_SR = converter.decToBin(getRegistrador("DS")+"");
+    
     int valor_bin = Integer.parseInt(str_SR);
     
     
     str_SR = String.format("%016d", valor_bin);
+    System.out.println("sr\t" + str_SR);
     
-    System.out.println(Integer.parseInt(str_SR.charAt(flag) + ""));
     
     
-    return(Integer.parseInt(str_SR.charAt(flag) + ""));
-        
+    System.out.println("flag " + flag + " CHAR NA FLAG ANTES DE MUDAR" +Integer.parseInt(str_SR.charAt(flag) + ""));
+    
+    StringBuilder new_str = new StringBuilder(str_SR);
+    new_str.setCharAt(flag, valor);
+    
+    System.out.println("new_str = " + new_str);
+    String new_str_dec = converter.binToDec(new_str.toString());
+    
+    System.out.println("new_str_dec " + new_str_dec);
+    int new_content = Integer.parseInt(new_str_dec);
+    System.out.println("new_content = " + new_content);
+    
+    updateRegistrador(new_content,"SR");
+    
         
     }
        

@@ -642,8 +642,10 @@ public class TelaPrincipal extends javax.swing.JFrame{
             
             Emulador2.load_instrucoes();
             
-            Emulador2.getbitSR(15);
-
+            System.out.println("sr bit  ="+Emulador2.getbitSR(15));
+            Emulador2.setbitSR('1', 0);
+            
+            
          
             buffRead.close();
         } catch (FileNotFoundException ex) {
