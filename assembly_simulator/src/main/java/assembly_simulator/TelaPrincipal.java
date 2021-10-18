@@ -643,7 +643,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.load_instrucoes();
             
             System.out.println("AX LS = " +Emulador2.getbyte("AX", "LS") );
-            
+            Emulador2.setbyte("DX", "MS", 255);
             
             
          

@@ -538,7 +538,58 @@ public class Emulador2 {
         
         return -1;
     }
+
+    public static void setbyte(String reg, String MSouLS, int valor){
     
+        String new_content;
+        if (reg.equals("AX")){
+            int aux =getRegistrador("AX");
+            String aux_str = Integer.toBinaryString(aux);
+            aux_str = String.format("%016d", Integer.parseInt(aux_str),2);
+            
+            String valor_str = Integer.toBinaryString(valor);
+            valor_str = String.format("%08d", Integer.parseInt(valor_str),2);
+            
+            String MS = aux_str.subSequence(0, 8).toString();
+            String LS = aux_str.subSequence(8, 16).toString();
+            
+            
+            if (MSouLS.equals("MS")){
+                new_content = valor_str+LS  ;
+                updateRegistrador(Integer.parseInt(converter.binToDec(new_content)),"AX");
+            }
+            else if (MSouLS.equals("LS")){
+                new_content = MS + valor_str;
+                updateRegistrador(Integer.parseInt(converter.binToDec(new_content)),"AX");
+            }
+        
+        }
+        
+        else if (reg.equals("DX")){
+            int aux =getRegistrador("DX");
+            String aux_str = Integer.toBinaryString(aux);
+            aux_str = String.format("%016d", Integer.parseInt(aux_str),2);
+            
+            String valor_str = Integer.toBinaryString(valor);
+            valor_str = String.format("%08d", Integer.parseInt(valor_str),2);
+            
+            String MS = aux_str.subSequence(0, 8).toString();
+            String LS = aux_str.subSequence(8, 16).toString();
+            
+            
+            if (MSouLS.equals("MS")){
+                new_content = valor_str+LS  ;
+                updateRegistrador(Integer.parseInt(converter.binToDec(new_content)),"DX");
+            }
+            else if (MSouLS.equals("LS")){
+                new_content = MS+valor_str ;
+                updateRegistrador(Integer.parseInt(converter.binToDec(new_content)),"DX");
+            }          
+        }
+        
+        
+       
+    }
     
     
     
