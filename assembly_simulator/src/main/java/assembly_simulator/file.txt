@@ -1,4 +1,7 @@
-add AX,10
+add AX,30
+mul SI
+sub AX,20
+div SI
 add AX,AX
 add AX,DX
 add AX,op1

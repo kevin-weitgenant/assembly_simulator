@@ -35,7 +35,7 @@ public class Emulador2 {
  
    
     
-    
+    protected static boolean hlt;
     public static int linha_atual;
     public static int IP = 0;
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
@@ -194,7 +194,7 @@ public class Emulador2 {
                 
             
             }else if(instrucao.contains("mul SI")){
-                updateMemoria(0xf7f6, controle_mem++);
+                updateMemoria(0xf6f7, controle_mem++);
                 
             }else if(instrucao.contains("mul AX")){
                 updateMemoria(0xf7f0, controle_mem++);
@@ -425,7 +425,10 @@ public class Emulador2 {
     
     public static void run_instrucao(){
             
-                
+                int AX = getRegistrador("AX");
+                int DX = getRegistrador("DX");
+                int SI = getRegistrador("SI");
+        
                 int instrucao = getMemoria(getRegistrador("IP"));
                 System.out.println("getRegistradorIP = "+getRegistrador("IP"));
                 System.out.println("getMemoria do Registrador IP = "+getMemoria(getRegistrador("IP")));
@@ -440,60 +443,119 @@ public class Emulador2 {
             break;
             
             case 0x05: // add opd
-                System.out.println("entro aqui em opd!");
+                
                 instrucao = getMemoria(getRegistrador("IP")+1);
-                System.out.println("Instrucao = "+ instrucao);
+                
                 updateRegistrador(getMemoria(instrucao)+ getRegistrador("AX"),"AX");
                 updateRegistrador(getRegistrador("IP")+1,"IP");
             break;
-            /*
+            
             case 0xf7f6:// div si
-                div = AX / SI;
-                AX = (short)(div & 256);
-                DX = (short)(div >>> 8);
+
+ 
+                updateRegistrador(AX/SI,"AX");
+                updateRegistrador(AX%SI,"DX");
+                
             break;
+            
+            
             case 0xf7c0:// div ax
-                div = AX / AX;
-                AX = (short)(div & 256);
-                DX = (short)(div >>> 8);
+ 
+ 
+                updateRegistrador(AX/AX,"AX");
+                updateRegistrador(AX%AX,"DX");
             break;
+            
+            
+            
+            
             case 0x2bc0:// sub ax
                 AX -= AX;
+                updateRegistrador(AX,"AX");
             break;
+            
             case 0x2bc2:// sub dx
                 AX -= DX;
+                updateRegistrador(AX,"AX");
             break;
+            
             case 0x25:// sub opd
-                memory.getPalavra(CS+IP++);
-                AX -= opd;
+                instrucao = getMemoria(getRegistrador("IP")+1);
+                int opd = getMemoria(instrucao);
+                
+               
+                updateRegistrador(AX-opd,"AX");
+                updateRegistrador(getRegistrador("IP")+1,"IP");
+                
             break;
-            // case 0xf7f6:// mul si
-                //todo
-            // break;
+            
+            case 0xf6f7:// mul si         inventei um codigo prof deu duplicado
+                int produto = AX*SI;
+                
+                updateRegistrador(produto,"AX");
+                if (produto >65535)updateRegistrador(getbyte("AX","MS"),"DX");
+                else updateRegistrador(0,"DX");
+                
+             break;
+            
             case 0xf7f0:// mul AX
-                mul = AX * AX;
-                AX = (short)(mul & 256);
-                DX = (short)(mul >>> 8);
+                produto = AX*AX;
+                
+                updateRegistrador(produto,"AX");
+                if (produto >65535)updateRegistrador(getbyte("AX","MS"),"DX");
+                else updateRegistrador(0,"DX");
             break;
+            
+             
             case 0x3d:// cmp opd
-                opd = memory.getPalavra(CS+IP++);
-                setFlag("zf", AX == opd);
+                instrucao = getMemoria(getRegistrador("IP")+1);
+                opd = getMemoria(instrucao);
+                
+               
+                if (AX == opd){
+                    setbitSR('1',"zf");
+                }
+                else setbitSR('0',"zf");
+                
+                updateRegistrador(getRegistrador("IP")+1,"IP");
+                
             break;
+            
+            
             case 0x3bc2://cmp DX
-                setFlag("zf", AX == DX);
+
+                
+               
+                if (DX == AX){
+                    setbitSR('1',"zf");
+                }
+                else setbitSR('0',"zf");
+                
+           
             break;
+            
+            
             case 0x23c0:// and AX
-                setFlag("zf", AX == AX);
+                AX &= AX;
+                
             break;
             case 0x23c2:// and DX
-                AX &= AX;
+                AX &= DX;
             break;
-            // case 0x25:// and opd
-                //todo
-                // CS+IP++;
-            // break;
+            
+                case 0xEE: // hlt
+                hlt = true;
+                
+            break;
+            
+            /*
+             case 0x25:// and opd
+                instrucao = getMemoria(getRegistrador("IP")+1);
+                opd = getMemoria(instrucao);
+                updateRegistrador(getRegistrador("IP")+1,"IP");
+             break;
             case 0xf8c0:// not ax
-                AX = (short)~AX;
+                AX = ~AX ;
             break;
             case 0x0bc0:// or ax
                 AX|=AX;
@@ -501,6 +563,7 @@ public class Emulador2 {
             case 0x0bc2:// or dx
                 AX|=DX;
             break;
+            /*
             case 0x0d:// or opd
                 opd = memory.getPalavra(CS+IP++);
                 AX|=opd;
@@ -580,9 +643,7 @@ public class Emulador2 {
                 opd = memory.getPalavra(CS+IP++);
                 outputStream = Util.convertIntegerToBinary(opd);
             break;
-            case 0xEE: // hlt
-                
-            break;
+
         }         */
                  
                 }
@@ -756,9 +817,75 @@ public class Emulador2 {
     
     
     return(Integer.parseInt(str_SR.charAt(flag) + ""));
-        
-        
+          
     }
+    public static int getbitSR(String flag){
+        
+        if (flag.equals("of")){
+            return getbitSR(3);
+        }
+        
+        else if (flag.equals("sf")){
+            return getbitSR(6);
+        }
+        
+        else if (flag.equals("zf")){
+            return getbitSR(7);
+        }
+        
+        else if (flag.equals("if")){
+            return getbitSR(8);
+        }
+        
+        else if (flag.equals("pf")){
+            return getbitSR(9);
+        }
+        else if (flag.equals("cf")){
+            return getbitSR(15);
+        }
+            
+    
+        return -1;
+    }
+public static void setbitSR(char valor,String flag){
+        
+        if (flag.equals("of")){
+             setbitSR(valor,3);
+        }
+        
+        else if (flag.equals("sf")){
+            setbitSR(valor,6);
+        }
+        
+        else if (flag.equals("zf")){
+            setbitSR(valor,7);
+        }
+        
+        else if (flag.equals("if")){
+            setbitSR(valor,8);
+        }
+        
+        else if (flag.equals("pf")){
+            setbitSR(valor,9);
+        }
+        else if (flag.equals("cf")){
+            setbitSR(valor,15);
+        }
+        
+        else System.out.println("Flag não encontrada");
+    
+       
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     public static void setbitSR(char valor,int flag){

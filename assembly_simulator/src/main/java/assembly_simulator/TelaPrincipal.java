@@ -565,15 +565,11 @@ public class TelaPrincipal extends javax.swing.JFrame{
  
    
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
+        if (!Emulador2.hlt){
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         highlighter.removeAllHighlights();
         
         
-        
-  
-        //-----
-        
-        //Emulador2.run_instrucao(Emulador2.instrucoes.get(Emulador2.linha_atual));
         Emulador2.linha_atual++;
         
         if(Emulador2.linha_atual >= Emulador2.instrucoes.size())Emulador2.linha_atual = 0;
@@ -588,7 +584,30 @@ public class TelaPrincipal extends javax.swing.JFrame{
         }
 
         Emulador2.run_instrucao();
-        Emulador2.updateRegistrador(Emulador2.getRegistrador("IP")+1,"IP");  // INCREMENTAR IP
+        Emulador2.updateRegistrador(Emulador2.getRegistrador("IP")+1,"IP");  // INCREMENTAR IP    
+            
+        }
+        
+        else if(Emulador2.hlt){
+            Highlighter highlighter = CodigoFonteField.getHighlighter();
+            highlighter.removeAllHighlights();
+            System.out.println("HLT");
+            Emulador2.linha_atual++;
+        try{     
+
+            
+        highlighInstrucoes(Emulador2.linha_atual);
+        
+        }
+        
+        
+        catch(Exception e){   
+        }
+            
+        }
+        
+        
+        
         
     }//GEN-LAST:event_nextStepActionPerformed
 
@@ -642,7 +661,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.print_tabela();
             
             Emulador2.load_instrucoes();
-            System.out.println("teste" +Emulador2.getMemoria(15));
+            Emulador2.updateRegistrador(10, "SI");
             
             
          
@@ -883,6 +902,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
 
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         Emulador2.linha_atual = 0;
+        Emulador2.hlt = false;
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         
         highlighter.removeAllHighlights();
