@@ -1,3 +1,4 @@
+add AX,10
 add AX,AX
 add AX,DX
 add AX,op1

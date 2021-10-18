@@ -642,8 +642,6 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.print_tabela();
             
             Emulador2.load_instrucoes();
-            Emulador2.updateRegistrador(1,"AX");
-            Emulador2.updateRegistrador(7,"DX");
             System.out.println("teste" +Emulador2.getMemoria(15));
             
             

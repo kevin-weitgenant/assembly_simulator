@@ -438,11 +438,15 @@ public class Emulador2 {
             case 0x03c2:// add dx
                 updateRegistrador(getRegistrador("AX")+getRegistrador("DX") ,"AX");
             break;
-            /*
+            
             case 0x05: // add opd
-                opd = memory.getPalavra(CS+IP++);
-                AX += opd;
+                System.out.println("entro aqui em opd!");
+                instrucao = getMemoria(getRegistrador("IP")+1);
+                System.out.println("Instrucao = "+ instrucao);
+                updateRegistrador(getMemoria(instrucao)+ getRegistrador("AX"),"AX");
+                updateRegistrador(getRegistrador("IP")+1,"IP");
             break;
+            /*
             case 0xf7f6:// div si
                 div = AX / SI;
                 AX = (short)(div & 256);
