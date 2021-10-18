@@ -507,6 +507,40 @@ public class Emulador2 {
     
     }
     
+    public static int getbyte(String reg, String MSouLS){
+    
+        if (reg.equals("AX")){
+            int aux =getRegistrador("AX");
+            String aux_str = Integer.toBinaryString(aux);
+            aux_str = String.format("%016d", Integer.parseInt(aux_str),2);
+            
+            
+            
+            String MS = aux_str.subSequence(0, 8).toString();
+            String LS = aux_str.subSequence(8, 16).toString();
+            
+            
+            if (MSouLS.equals("MS"))return Integer.parseInt(MS, 2);
+            else if (MSouLS.equals("LS")) return Integer.parseInt(LS, 2);
+           
+        }
+        
+        else if (reg.equals("DX")){
+            int aux =getRegistrador("DX");
+            String aux_str = Integer.toBinaryString(aux);
+            String MS = aux_str.subSequence(0, 8).toString();
+            String LS = aux_str.subSequence(8, 16).toString();
+            
+            if (MSouLS.equals("MS"))return Integer.parseInt(MS, 2);
+            else if (MSouLS.equals("LS")) return Integer.parseInt(LS, 2);            
+        }
+        
+        
+        return -1;
+    }
+    
+    
+    
     
     public static int getbitSR(int flag){
         
@@ -533,21 +567,17 @@ public class Emulador2 {
     
     
     str_SR = String.format("%016d", valor_bin);
-    System.out.println("sr\t" + str_SR);
-    
-    
-    
-    System.out.println("flag " + flag + " CHAR NA FLAG ANTES DE MUDAR" +Integer.parseInt(str_SR.charAt(flag) + ""));
-    
+ 
+
     StringBuilder new_str = new StringBuilder(str_SR);
     new_str.setCharAt(flag, valor);
     
-    System.out.println("new_str = " + new_str);
+
     String new_str_dec = converter.binToDec(new_str.toString());
     
     System.out.println("new_str_dec " + new_str_dec);
     int new_content = Integer.parseInt(new_str_dec);
-    System.out.println("new_content = " + new_content);
+  
     
     updateRegistrador(new_content,"SR");
     
