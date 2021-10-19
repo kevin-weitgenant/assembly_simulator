@@ -56,9 +56,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     //private Emulador2 emulador2 = new Emulador2();
     
     static String[] aux_reg = {"AX: ","DX: ","SP: ","SI: ","IP: ","SR: ","CS: ","DS: "}; 
-    
-    
-   
+
     /**
      * Creates new form TelaPrincipal
      */
@@ -164,7 +162,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
 
         displayInputLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         displayInputLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        displayInputLabel.setText("<html><body>Digite um Registrador ou<br>variável para ser exibido</body></html>");
+        displayInputLabel.setText("<html><body>Digite um Registrador ou<br>variavel para ser exibido</body></html>");
         displayPanel.add(displayInputLabel);
         displayInputLabel.setBounds(40, 284, 180, 40);
 
@@ -183,7 +181,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         outputScreenLabel.setBounds(50, 90, 130, 110);
 
         imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imageLabel.setIcon(new javax.swing.ImageIcon("C:\\Users\\kevin\\Desktop\\agoravai\\assembly_simulator\\assembly_simulator\\src\\main\\java\\assembly_simulator\\computerImage.jpg")); // NOI18N
+        imageLabel.setIcon(new javax.swing.ImageIcon("assembly_simulator/src/main/java/assembly_simulator/computerImage.jpg")); // NOI18N
         displayPanel.add(imageLabel);
         imageLabel.setBounds(10, 40, 230, 260);
 
@@ -199,7 +197,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         codigoFonteLabel.setBackground(new java.awt.Color(0, 0, 0));
         codigoFonteLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         codigoFonteLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        codigoFonteLabel.setText("Código Fonte");
+        codigoFonteLabel.setText("Codigo Fonte");
         codigoFonteLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         CodigoFonteField.setColumns(20);
@@ -272,7 +270,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         memoriaLabel.setBackground(new java.awt.Color(0, 0, 0));
         memoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         memoriaLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        memoriaLabel.setText("Endereços de Memoria");
+        memoriaLabel.setText("Enderecos de Memoria");
         memoriaLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         memoria.setModel(new javax.swing.AbstractListModel<String>() {
@@ -288,7 +286,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }
         });
 
-        localizaMemoryButton.setText("Localizar memória");
+        localizaMemoryButton.setText("Localizar memoria");
         localizaMemoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 localizaMemoryButtonActionPerformed(evt);
@@ -516,9 +514,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     
     public void initRegister(){
         
-        
-        
-        regis[0] = "AX: 0x0000";
+      regis[0] = "AX: 0x0000";
         regis[1] = "DX: 0x0000";
         regis[2] = "SP: 0x0000";
         regis[3] = "SI: 0x0000";
@@ -553,7 +549,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
       linha = Emulador2.instrucoes.get(numero_linha);
       
       
-      pos_0 = CodigoFonteField.getText().indexOf(linha); // errado, buga em instruções iguais
+      pos_0 = CodigoFonteField.getText().indexOf(linha); // errado, buga em instruï¿½ï¿½es iguais
       //                              Tem que ser isso>> pos_0 = CodigoFonteField.getText().indexOf(linha, indice); e nao sei oq por em indice    
       
       pos_1 = pos_0 + linha.length();
@@ -605,10 +601,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         }
             
         }
-        
-        
-        
-        
+      
     }//GEN-LAST:event_nextStepActionPerformed
 
     private void runAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runAllActionPerformed
@@ -622,11 +615,10 @@ public class TelaPrincipal extends javax.swing.JFrame{
         boolean linux = false;
         String ArquivoCarregado = new String("") ;
         String linha =new String();
-        String CaminhoDoArquivo =new String(System.getProperty("user.dir")+"/src/main/java/assembly_simulator/file.txt"); //novo
+        String CaminhoDoArquivo =new String("assembly_simulator/src/main/java/assembly_simulator/file.txt"); //novo
         BufferedReader buffRead; //reader do arquivo
         
-        
-        
+    
         try {
             System.out.println(linha);
             
@@ -642,9 +634,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             if(linux){
                 buffRead = new BufferedReader(new FileReader("./file.txt"));
             }
-            
-            
-            
+      
             linha = buffRead.readLine();
             while (linha!=null) {                
                 ArquivoCarregado=ArquivoCarregado.concat(linha+"\n");
@@ -654,17 +644,14 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Emulador2.instrucoes = Arrays.asList(CodigoFonteField.getText().split("\n")   );
             
             Emulador2.InitRegistradores();
-
-            
-            
+ 
             Emulador2.tabela_operandos();
             Emulador2.print_tabela();
             
             Emulador2.load_instrucoes();
             Emulador2.updateRegistrador(10, "SI");
             
-            
-         
+
             buffRead.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -712,12 +699,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
     private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
         String linha;
         String reg_linha;
-        
-        
-        
-        
-        
-         
+      
         if (comboBox.getSelectedItem().equals("Hex")){
             if (fbin){
                 
@@ -743,9 +725,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }               
                 
             }
-            
-   
-            
+  
             //memÃ³ria
             for(int i = 0; i< memoria.getModel().getSize();i++){
                 linha = memoria.getModel().getElementAt(i);
@@ -767,9 +747,6 @@ public class TelaPrincipal extends javax.swing.JFrame{
                 listMemoryModel.setElementAt(linha, i);
                   
                 }
-                
-                
-                
 
             }   
             fhex = true;
@@ -803,14 +780,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }               
                 
             }
-            
-            
-            
-            
-            
-            
-            
-            
+
+       
                 for(int i = 0; i< memoria.getModel().getSize();i++){
                 linha = memoria.getModel().getElementAt(i);
                 linha = linha.split(":")[1];
