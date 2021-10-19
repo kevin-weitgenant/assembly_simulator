@@ -1,4 +1,4 @@
-#**Coisas que faltaram ser implementadas**
+## Coisas que faltaram ser implementadas
 
 Algumas instruções não foram implementadas mas já tinham todas as funções auxiliares para serem facilmente implementadas. As instruções de maior problema que realmente demandariam mais alguns ajustes são as de desvio condicional, para essas instruções falta que a tabela de operandos guarde rótulos.
 
