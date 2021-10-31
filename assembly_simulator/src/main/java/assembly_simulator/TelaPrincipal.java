@@ -44,6 +44,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
+import org.apache.commons.lang3.StringUtils;
 
 public class TelaPrincipal extends javax.swing.JFrame{
 
@@ -541,26 +542,41 @@ public class TelaPrincipal extends javax.swing.JFrame{
       HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.yellow);
       
       int pos_0,pos_1;
-      String linha;
+      
       
       highlighter.removeAllHighlights();
       
-      linha = Emulador2.instrucoes.get(numero_linha);
       
+      if (numero_linha == 0){
+          pos_0 = 0;
+          pos_1 = StringUtils.ordinalIndexOf(CodigoFonteField.getText(), "\n", 1);
+          
+      }
       
-      pos_0 = CodigoFonteField.getText().indexOf(linha); // errado, buga em instru��es iguais
-      //                              Tem que ser isso>> pos_0 = CodigoFonteField.getText().indexOf(linha, indice); e nao sei oq por em indice    
+      else{
+      pos_0 = StringUtils.ordinalIndexOf(CodigoFonteField.getText(), "\n", numero_linha);
       
-      pos_1 = pos_0 + linha.length();
+      pos_1 = StringUtils.ordinalIndexOf(CodigoFonteField.getText(), "\n", numero_linha+1);    
+          
+      }
 
+  
+      
+     
+  
+      
+
+      System.out.println("numero_linha = "+numero_linha+"pos_0 = "+pos_0+"pos_1 = "+ pos_1);
+      
       highlighter.addHighlight(pos_0, pos_1, painter );  
-            
+      System.out.println("instrucoes.size = "+ Emulador2.instrucoes.size());      
     }
     
  
    
     private void nextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextStepActionPerformed
         if (!Emulador2.hlt){
+        
         Highlighter highlighter = CodigoFonteField.getHighlighter();
         highlighter.removeAllHighlights();
         
@@ -587,11 +603,11 @@ public class TelaPrincipal extends javax.swing.JFrame{
             Highlighter highlighter = CodigoFonteField.getHighlighter();
             highlighter.removeAllHighlights();
             System.out.println("HLT");
-            Emulador2.linha_atual++;
+            
         try{     
 
             
-        highlighInstrucoes(Emulador2.linha_atual);
+        highlighInstrucoes(Emulador2.linha_atual+1);
         
         }
         

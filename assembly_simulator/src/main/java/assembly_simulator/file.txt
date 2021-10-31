@@ -7,14 +7,4 @@ add AX,DX
 add AX,op1
 op1 EQU 12
 op4 DW 8
-op3 DW 10
-add AX,9
-add AX,10
-add AX,AX
-op2 EQU 8
-add AX,op1
-add AX,AX
-add AX,9
-add AX,10
-add AX,AX
 hlt
