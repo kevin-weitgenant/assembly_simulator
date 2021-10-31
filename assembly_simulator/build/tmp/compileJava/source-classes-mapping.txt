@@ -1,13 +1,3 @@
-Emulador/Emulador.java
- Emulador.Emulador
- Emulador.Emulador$paramTypes
-Emulador/Memory.java
- Emulador.Memory
-Emulador/Util.java
- Emulador.Util
-Emulador/VarTable.java
- Emulador.LinhaTable
- Emulador.VarTable
 assembly_simulator/converter.java
  assembly_simulator.converter
 assembly_simulator/Emulador2.java

@@ -162,7 +162,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
 
         displayInputLabel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         displayInputLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        displayInputLabel.setText("<html><body>Digite um Registrador ou<br>variavel para ser exibido</body></html>");
+        displayInputLabel.setText("<html><body>Digite um Registrador ou<br>variável para ser exibido</body></html>");
         displayPanel.add(displayInputLabel);
         displayInputLabel.setBounds(40, 284, 180, 40);
 
@@ -181,7 +181,6 @@ public class TelaPrincipal extends javax.swing.JFrame{
         outputScreenLabel.setBounds(50, 90, 130, 110);
 
         imageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imageLabel.setIcon(new javax.swing.ImageIcon("assembly_simulator/src/main/java/assembly_simulator/computerImage.jpg")); // NOI18N
         displayPanel.add(imageLabel);
         imageLabel.setBounds(10, 40, 230, 260);
 
@@ -197,7 +196,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         codigoFonteLabel.setBackground(new java.awt.Color(0, 0, 0));
         codigoFonteLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         codigoFonteLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        codigoFonteLabel.setText("Codigo Fonte");
+        codigoFonteLabel.setText("Código Fonte");
         codigoFonteLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         CodigoFonteField.setColumns(20);
@@ -270,7 +269,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
         memoriaLabel.setBackground(new java.awt.Color(0, 0, 0));
         memoriaLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         memoriaLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        memoriaLabel.setText("Enderecos de Memoria");
+        memoriaLabel.setText("Endereços de Memoria");
         memoriaLabel.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         memoria.setModel(new javax.swing.AbstractListModel<String>() {
@@ -286,7 +285,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             }
         });
 
-        localizaMemoryButton.setText("Localizar memoria");
+        localizaMemoryButton.setText("Localizar memória");
         localizaMemoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 localizaMemoryButtonActionPerformed(evt);
@@ -615,7 +614,8 @@ public class TelaPrincipal extends javax.swing.JFrame{
         boolean linux = false;
         String ArquivoCarregado = new String("") ;
         String linha =new String();
-        String CaminhoDoArquivo =new String("assembly_simulator/src/main/java/assembly_simulator/file.txt"); //novo
+        System.out.println("teste = " + System.getProperty("user.dir"));
+        String CaminhoDoArquivo = new String(System.getProperty("user.dir")+"/src/main/java/assembly_simulator/file.txt");
         BufferedReader buffRead; //reader do arquivo
         
     
@@ -623,18 +623,7 @@ public class TelaPrincipal extends javax.swing.JFrame{
             System.out.println(linha);
             
             buffRead = new BufferedReader(new FileReader(CaminhoDoArquivo));
-            
-            try {
-                buffRead = new BufferedReader(new FileReader(CaminhoDoArquivo));
-                } 
-            catch (Exception e) {
-                linux = true;    
-            }
-            
-            if(linux){
-                buffRead = new BufferedReader(new FileReader("./file.txt"));
-            }
-      
+                  
             linha = buffRead.readLine();
             while (linha!=null) {                
                 ArquivoCarregado=ArquivoCarregado.concat(linha+"\n");
