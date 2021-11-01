@@ -1,11 +1,11 @@
-#**O que já foi feito**
+#O que já foi feito
 
 
 
-#**O que falta implementar**
+#O que falta implementar
 
 
-#**Coisas que foram implementadas mas devem ser modificadas**
+#Coisas que foram implementadas mas devem ser modificadas
 
 
 
