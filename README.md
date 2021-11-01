@@ -19,7 +19,7 @@ Tabela de variáveis é criada em um hashmap.   tabela_opds = new HashMap<String
 
 ## Coisas que foram implementadas mas devem ser modificadas
 - Constantes não devem ir pra memória. Com constantes digo operandos declarados como **op1 EQU 30** ou algo como add AX,30.  Tanto 30 como op1 são constantes
-- Segmentos de dados e codigo devem ser definidos dinamicamente. Consultar se pilha de
+- Segmentos de dados e codigo devem ser definidos dinamicamente. Consultar se pilha também(mandei e-mail pro professor)
 
 
 
