@@ -1,6 +1,6 @@
 ## Como abrir o código
 
-Instale Netbeans Apache 12.5 ou caso esteja no VS, precisará desse extensão https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-gradle
+Instale Netbeans Apache 12.5 https://netbeans.apache.org/download/nb125/nb125.html ou caso esteja no VS, precisará desse extensão https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-gradle
 
 
 ## O que já foi feito
